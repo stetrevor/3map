@@ -1,6 +1,6 @@
 <template>
   <ul class="tree-editor">
-    <node-item :item="tree" />
+    <node-item :item="tree" :remove-self-button-show="false" />
   </ul>
 </template>
 

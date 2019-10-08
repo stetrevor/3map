@@ -13,6 +13,7 @@
 
         <button
           class="node-item__remove-self"
+          v-if="removeSelfButtonShow"
           @click="item.children.length ? (dialogShow = true) : removeSelf()"
         >
           Remove node
@@ -81,6 +82,10 @@ export default {
     item: {
       type: Object,
       required: true
+    },
+    removeSelfButtonShow: {
+      type: Boolean,
+      default: true
     }
   },
 
