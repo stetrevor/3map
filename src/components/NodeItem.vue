@@ -21,13 +21,32 @@
       </div>
     </div>
 
+    <button
+      class="node-item__reorder-children"
+      @click="reorderingChildren ? reorderChildren() : startReorderChildren()"
+      v-if="item.children.length > 1"
+    >
+      {{
+        reorderingChildren ? "Reorder Children" : "Start Reordering Children"
+      }}
+    </button>
+
     <ul>
-      <node-item
-        v-for="(child, index) in item.children"
-        :key="index"
-        :item="child"
-        @remove-node="removeNode($event, child, index)"
-      />
+      <div v-for="(child, index) in item.children" :key="index">
+        <label :for="`reorder-${index}`" v-if="reorderingChildren"
+          >Reorder</label
+        >
+        <input
+          type="number"
+          v-if="reorderingChildren"
+          v-model.number="orders[index]"
+          :id="`reorder-${index}`"
+        />
+        <node-item
+          :item="child"
+          @remove-node="removeNode($event, child, index)"
+        />
+      </div>
     </ul>
 
     <button class="node-item__add-child" @click="addChild">
@@ -83,6 +102,7 @@ export default {
       type: Object,
       required: true
     },
+
     removeSelfButtonShow: {
       type: Boolean,
       default: true
@@ -107,6 +127,22 @@ export default {
       } else if (option === "reparent-children") {
         this.item.children.splice(index, 1, ...node.children);
       }
+    },
+
+    startReorderChildren() {
+      this.orders = this.item.children.map((c, i) => i + 1);
+
+      this.reorderingChildren = true;
+    },
+
+    reorderChildren() {
+      console.log("reorder children");
+      this.reorderingChildren = false;
+
+      const sortedChildren = this.orders
+        .map((order, i) => [order, this.item.children[i]])
+        .sort((a, b) => a[0] - b[0]);
+      this.item.children = sortedChildren.map(sc => sc[1]);
     }
   },
 
@@ -114,10 +150,21 @@ export default {
     return {
       editing: false,
       removeOption: "reparent-children",
-      dialogShow: false
+      dialogShow: false,
+      reorderingChildren: false,
+      orders: []
     };
   }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.node-item {
+  margin-bottom: 24px;
+
+  &__reorder-children {
+    border-color: red;
+    border-radius: 4px;
+  }
+}
+</style>
