@@ -13,7 +13,7 @@
       </span>
       <button
         class="node-item__remove-self"
-        v-if="removeSelfButtonShow"
+        v-if="canRemoveSelf"
         @click="item.children.length ? (dialogShow = true) : removeSelf()"
       >
         Remove node
@@ -121,7 +121,7 @@ export default {
       required: true
     },
 
-    removeSelfButtonShow: {
+    canRemoveSelf: {
       type: Boolean,
       default: true
     },

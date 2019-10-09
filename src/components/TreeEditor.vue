@@ -2,7 +2,7 @@
   <ul class="tree-editor">
     <node-item
       :item="tree"
-      :remove-self-button-show="false"
+      :can-remove-self="false"
       :move-node="moveNode"
       :can-move-self="false"
       :id-func="generateId"
