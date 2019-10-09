@@ -8,9 +8,9 @@
         @keyup.enter="editing = false"
         @keyup.esc="editing = false"
       />
-      <div class="node-item__text" v-else @dblclick="editing = true">
+      <span class="node-item__text" v-else @dblclick="editing = true">
         {{ item.text }}
-
+      </span>
         <button
           class="node-item__remove-self"
           v-if="removeSelfButtonShow"
@@ -19,7 +19,6 @@
           Remove node
         </button>
       </div>
-    </div>
 
     <button
       class="node-item__reorder-children"
