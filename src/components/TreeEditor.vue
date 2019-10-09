@@ -3,13 +3,13 @@
     <node-item
       :item="tree"
       :can-remove-self="false"
-      :move-node="moveNode"
+      :move-node-tool="moveNodeTool"
       :select-tool="selectTool"
       :can-move-self="false"
       :id-func="generateId"
       @set-move-to="
-        moveNode.setMoveTo(tree);
-        moveNode.move();
+        moveNodeTool.setMoveTo(tree);
+        moveNodeTool.move();
       "
     />
   </ul>
@@ -18,7 +18,7 @@
 <script>
 import NodeItem from "@/components/NodeItem";
 
-class MoveNode {
+class MoveNodeTool {
   constructor(rootNode) {
     this.tree = rootNode;
     this.availableParents = [];
@@ -98,7 +98,7 @@ export default {
   },
 
   created() {
-    this.moveNode = new MoveNode(this.tree);
+    this.moveNodeTool = new MoveNodeTool(this.tree);
     this.selectTool = new SelectTool();
     this.selectTool.select(this.tree);
   },
@@ -111,7 +111,7 @@ export default {
         children: []
       },
 
-      moveNode: null,
+      moveNodeTool: null,
 
       selectTool: null
     };

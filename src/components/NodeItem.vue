@@ -29,7 +29,7 @@
         Move
       </button>
       <button
-        v-if="moveNode.availableParents.includes(item)"
+        v-if="moveNodeTool.availableParents.includes(item)"
         @click="$emit('set-move-to', item)"
       >
         Set As Parent
@@ -59,17 +59,17 @@
         />
         <node-item
           :item="child"
-          :move-node="moveNode"
+          :move-node-tool="moveNodeTool"
           :select-tool="selectTool"
           :id-func="idFunc"
           @remove-node="removeNode($event, child, index)"
           @set-move-node="
-            moveNode.setMoveNode(child);
-            moveNode.setMoveFrom(item);
+            moveNodeTool.setMoveNode(child);
+            moveNodeTool.setMoveFrom(item);
           "
           @set-move-to="
-            moveNode.setMoveTo(child);
-            moveNode.move();
+            moveNodeTool.setMoveTo(child);
+            moveNodeTool.move();
           "
         />
       </div>
@@ -134,7 +134,7 @@ export default {
       default: true
     },
 
-    moveNode: {
+    moveNodeTool: {
       type: Object,
       required: true
     },
