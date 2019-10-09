@@ -1,5 +1,5 @@
 <template>
-  <li class="node-item">
+  <div class="node-item">
     <div
       class="node-item__self"
       :class="{ 'node-item__self--active': active }"
@@ -47,34 +47,30 @@
       }}
     </button>
 
-    <ul>
-      <div v-for="(child, index) in item.children" :key="index">
-        <label :for="`reorder-${index}`" v-if="reorderingChildren"
-          >Reorder</label
-        >
-        <input
-          type="number"
-          v-if="reorderingChildren"
-          v-model.number="orders[index]"
-          :id="`reorder-${index}`"
-        />
-        <node-item
-          :item="child"
-          :move-node-tool="moveNodeTool"
-          :select-tool="selectTool"
-          :id-func="idFunc"
-          @remove-node="removeNode($event, child, index)"
-          @set-move-node="
-            moveNodeTool.setMoveNode(child);
-            moveNodeTool.setMoveFrom(item);
-          "
-          @set-move-to="
-            moveNodeTool.setMoveTo(child);
-            moveNodeTool.move();
-          "
-        />
-      </div>
-    </ul>
+    <div v-for="(child, index) in item.children" :key="index">
+      <label :for="`reorder-${index}`" v-if="reorderingChildren">Reorder</label>
+      <input
+        type="number"
+        v-if="reorderingChildren"
+        v-model.number="orders[index]"
+        :id="`reorder-${index}`"
+      />
+      <node-item
+        :item="child"
+        :move-node-tool="moveNodeTool"
+        :select-tool="selectTool"
+        :id-func="idFunc"
+        @remove-node="removeNode($event, child, index)"
+        @set-move-node="
+          moveNodeTool.setMoveNode(child);
+          moveNodeTool.setMoveFrom(item);
+        "
+        @set-move-to="
+          moveNodeTool.setMoveTo(child);
+          moveNodeTool.move();
+        "
+      />
+    </div>
 
     <button class="node-item__add-child" v-if="active" @click="addChild">
       Add child node
@@ -113,7 +109,7 @@
         >
       </div>
     </base-dialog>
-  </li>
+  </div>
 </template>
 
 <script>

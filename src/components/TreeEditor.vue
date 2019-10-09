@@ -1,5 +1,5 @@
 <template>
-  <ul class="tree-editor">
+  <div class="tree-editor">
     <node-item
       :item="tree"
       :can-remove-self="false"
@@ -12,7 +12,7 @@
         moveNodeTool.move();
       "
     />
-  </ul>
+  </div>
 </template>
 
 <script>
