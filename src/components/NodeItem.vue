@@ -13,9 +13,9 @@
         @keyup.enter="editing = false"
         @keyup.esc="editing = false"
       />
-      <span class="node-item__text" v-else @dblclick="editing = true">
+      <div class="node-item__text" v-else @dblclick="editing = true">
         {{ item.text }}
-      </span>
+      </div>
       <button
         class="node-item__remove-self"
         v-if="canRemoveSelf && active"
