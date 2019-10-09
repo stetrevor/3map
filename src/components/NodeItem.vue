@@ -43,6 +43,7 @@
         />
         <node-item
           :item="child"
+          :id-func="idFunc"
           @remove-node="removeNode($event, child, index)"
         />
       </div>
@@ -105,6 +106,13 @@ export default {
     removeSelfButtonShow: {
       type: Boolean,
       default: true
+    },
+
+    moveNode: {
+
+    idFunc: {
+      type: Function,
+      required: true
     }
   },
 

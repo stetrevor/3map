@@ -10,6 +10,18 @@ import NodeItem from "@/components/NodeItem";
 export default {
   components: { NodeItem },
 
+  methods: {
+    generateId: (() => {
+      let count = 0;
+
+      function id() {
+        count += 1;
+        return count;
+      }
+
+      return id;
+    })()
+  },
   data() {
     return {
       tree: {
