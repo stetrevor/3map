@@ -6,6 +6,10 @@
       :move-node="moveNode"
       :can-move-self="false"
       :id-func="generateId"
+      @set-move-to="
+        moveNode.setMoveTo(tree);
+        moveNode.move();
+      "
     />
   </ul>
 </template>
