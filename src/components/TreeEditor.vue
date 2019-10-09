@@ -72,8 +72,7 @@ class MoveNode {
 }
 
 class SelectTool {
-  constructor(rootNode) {
-    this.tree = rootNode;
+  constructor() {
     this.activeNode = null;
   }
 
@@ -100,7 +99,7 @@ export default {
 
   created() {
     this.moveNode = new MoveNode(this.tree);
-    this.selectTool = new SelectTool(this.tree);
+    this.selectTool = new SelectTool();
     this.selectTool.select(this.tree);
   },
 
