@@ -48,18 +48,21 @@
     </button>
 
     <template v-for="(child, index) in item.children">
-      <label :for="`reorder-${index}`" v-if="reorderingChildren" :key="index"
+      <label
+        :for="`reorder-${index}`"
+        v-if="reorderingChildren"
+        :key="`label-${index}`"
         >Reorder</label
       >
       <input
         type="number"
         v-if="reorderingChildren"
         v-model.number="orders[index]"
-        :key="index"
+        :key="`input-${index}`"
         :id="`reorder-${index}`"
       />
       <node-item
-        :key="index"
+        :key="`node-item-${index}`"
         :item="child"
         :move-node-tool="moveNodeTool"
         :select-tool="selectTool"
