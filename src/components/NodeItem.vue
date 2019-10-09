@@ -11,14 +11,23 @@
       <span class="node-item__text" v-else @dblclick="editing = true">
         {{ item.text }}
       </span>
-        <button
-          class="node-item__remove-self"
-          v-if="removeSelfButtonShow"
-          @click="item.children.length ? (dialogShow = true) : removeSelf()"
-        >
-          Remove node
-        </button>
-      </div>
+      <button
+        class="node-item__remove-self"
+        v-if="removeSelfButtonShow"
+        @click="item.children.length ? (dialogShow = true) : removeSelf()"
+      >
+        Remove node
+      </button>
+      <button v-if="canMoveSelf" @click="$emit('set-move-node', item)">
+        Reparent
+      </button>
+      <button
+        v-if="moveNode.availableParents.includes(item)"
+        @click="$emit('set-move-to', item)"
+      >
+        Set As Parent
+      </button>
+    </div>
 
     <button
       class="node-item__reorder-children"
@@ -43,8 +52,17 @@
         />
         <node-item
           :item="child"
+          :move-node="moveNode"
           :id-func="idFunc"
           @remove-node="removeNode($event, child, index)"
+          @set-move-node="
+            moveNode.setMoveNode(child);
+            moveNode.setMoveFrom(item);
+          "
+          @set-move-to="
+            moveNode.setMoveTo(child);
+            moveNode.move();
+          "
         />
       </div>
     </ul>
@@ -109,6 +127,14 @@ export default {
     },
 
     moveNode: {
+      type: Object,
+      required: true
+    },
+
+    canMoveSelf: {
+      type: Boolean,
+      default: true
+    },
 
     idFunc: {
       type: Function,
@@ -118,9 +144,10 @@ export default {
 
   methods: {
     addChild() {
+      const id = this.idFunc();
       this.item.children.push({
-        id: this.item.id + this.item.children.length + 1,
-        text: `${this.item.text}::New Child`,
+        id,
+        text: `${this.item.text}::${id}`,
         children: []
       });
     },
