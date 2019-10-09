@@ -19,7 +19,7 @@
         Remove node
       </button>
       <button v-if="canMoveSelf" @click="$emit('set-move-node', item)">
-        Reparent
+        Move
       </button>
       <button
         v-if="moveNode.availableParents.includes(item)"
