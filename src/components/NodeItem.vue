@@ -242,6 +242,7 @@ export default {
   }
 
   &__reorder-children {
+    display: block;
     border-color: red;
     border-radius: 4px;
   }
