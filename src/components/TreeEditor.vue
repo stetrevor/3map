@@ -120,4 +120,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.tree-editor {
+  position: relative;
+}
+</style>

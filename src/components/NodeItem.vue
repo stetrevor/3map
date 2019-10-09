@@ -234,6 +234,7 @@ export default {
   margin-bottom: 24px;
 
   &__self {
+    position: absolute;
     border: 1px solid #2c3e50;
 
     &--active {
