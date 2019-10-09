@@ -4,6 +4,7 @@
       class="node-item__self"
       :class="{ 'node-item__self--active': active }"
       @click="selectTool.select(item)"
+      :style="styleObject"
     >
       <input
         v-if="editing"
@@ -158,6 +159,14 @@ export default {
   computed: {
     active() {
       return this.item.id === this.selectTool.activeNode.id;
+    },
+
+    styleObject() {
+      const [width, height] = this.item.size;
+      return {
+        width: `${width}px`,
+        height: `${height}px`
+      };
     }
   },
 
@@ -167,6 +176,7 @@ export default {
       this.item.children.push({
         id,
         text: `${this.item.text}::${id}`,
+        size: [200, 50],
         children: []
       });
     },

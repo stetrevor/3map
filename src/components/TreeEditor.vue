@@ -108,6 +108,7 @@ export default {
       tree: {
         id: 0,
         text: "Root Node",
+        size: [200, 50],
         children: []
       },
 
