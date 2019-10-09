@@ -42,9 +42,11 @@ class MoveNode {
   move() {
     if (!this.readyToMove()) return;
 
-    const index = this.from.children.indexOf(this.moveNode);
-    this.from.children.splice(index, 1);
-    this.to.children.push(this.moveNode);
+    if (this.from.id !== this.to.id) {
+      const index = this.from.children.indexOf(this.moveNode);
+      this.from.children.splice(index, 1);
+      this.to.children.push(this.moveNode);
+    }
 
     this.reset();
   }
