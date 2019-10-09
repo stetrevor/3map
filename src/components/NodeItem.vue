@@ -17,12 +17,15 @@
       </span>
       <button
         class="node-item__remove-self"
-        v-if="canRemoveSelf"
+        v-if="canRemoveSelf && active"
         @click="item.children.length ? (dialogShow = true) : removeSelf()"
       >
         Remove node
       </button>
-      <button v-if="canMoveSelf" @click="$emit('set-move-node', item)">
+      <button
+        v-if="canMoveSelf && active"
+        @click="$emit('set-move-node', item)"
+      >
         Move
       </button>
       <button
@@ -36,7 +39,7 @@
     <button
       class="node-item__reorder-children"
       @click="reorderingChildren ? reorderChildren() : startReorderChildren()"
-      v-if="item.children.length > 1"
+      v-if="item.children.length > 1 && active"
     >
       {{
         reorderingChildren ? "Reorder Children" : "Start Reordering Children"
@@ -72,7 +75,7 @@
       </div>
     </ul>
 
-    <button class="node-item__add-child" @click="addChild">
+    <button class="node-item__add-child" v-if="active" @click="addChild">
       Add child node
     </button>
 
