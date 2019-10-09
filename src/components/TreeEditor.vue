@@ -4,6 +4,7 @@
       :item="tree"
       :can-remove-self="false"
       :move-node="moveNode"
+      :select-tool="selectTool"
       :can-move-self="false"
       :id-func="generateId"
       @set-move-to="
@@ -70,6 +71,17 @@ class MoveNode {
   }
 }
 
+class SelectTool {
+  constructor(rootNode) {
+    this.tree = rootNode;
+    this.activeNode = null;
+  }
+
+  select(nodeItem) {
+    this.activeNode = nodeItem;
+  }
+}
+
 export default {
   components: { NodeItem },
 
@@ -88,6 +100,8 @@ export default {
 
   created() {
     this.moveNode = new MoveNode(this.tree);
+    this.selectTool = new SelectTool(this.tree);
+    this.selectTool.select(this.tree);
   },
 
   data() {
@@ -98,7 +112,9 @@ export default {
         children: []
       },
 
-      moveNode: null
+      moveNode: null,
+
+      selectTool: null
     };
   }
 };

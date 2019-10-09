@@ -1,6 +1,10 @@
 <template>
   <li class="node-item">
-    <div class="node-item__self">
+    <div
+      class="node-item__self"
+      :class="{ 'node-item__self--active': active }"
+      @click="selectTool.select(item)"
+    >
       <input
         v-if="editing"
         type="text"
@@ -53,6 +57,7 @@
         <node-item
           :item="child"
           :move-node="moveNode"
+          :select-tool="selectTool"
           :id-func="idFunc"
           @remove-node="removeNode($event, child, index)"
           @set-move-node="
@@ -139,6 +144,17 @@ export default {
     idFunc: {
       type: Function,
       required: true
+    },
+
+    selectTool: {
+      type: Object,
+      required: true
+    }
+  },
+
+  computed: {
+    active() {
+      return this.item.id === this.selectTool.activeNode.id;
     }
   },
 
@@ -196,6 +212,14 @@ export default {
 <style lang="scss">
 .node-item {
   margin-bottom: 24px;
+
+  &__self {
+    border: 1px solid #2c3e50;
+
+    &--active {
+      background-color: rgba(#2c3e50, 0.2);
+    }
+  }
 
   &__reorder-children {
     border-color: red;
