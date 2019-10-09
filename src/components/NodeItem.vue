@@ -79,7 +79,11 @@
       />
     </template>
 
-    <button class="node-item__add-child" v-if="active" @click="addChild">
+    <button
+      class="node-item__add-child"
+      v-if="active && !reorderingChildren"
+      @click="addChild"
+    >
       Add child node
     </button>
 
