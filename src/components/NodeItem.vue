@@ -112,6 +112,7 @@ export default {
   methods: {
     addChild() {
       this.item.children.push({
+        id: this.item.id + this.item.children.length + 1,
         text: `${this.item.text}::New Child`,
         children: []
       });
