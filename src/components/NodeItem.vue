@@ -7,7 +7,7 @@
       :style="styleObject"
     >
       <input
-        v-if="editing"
+        v-if="editing && active"
         type="text"
         v-model="item.text"
         @keyup.enter="editing = false"
