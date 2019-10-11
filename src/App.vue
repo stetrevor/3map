@@ -1,17 +1,21 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <tree-editor />
+    <div id="nav">
+      <router-link to="/">Home</router-link>
+      <template v-if="NODE_ENV === 'development'">
+        | <router-link to="/playground/">Playground</router-link>
+      </template>
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-import TreeEditor from "./components/TreeEditor.vue";
-
 export default {
-  name: "app",
-  components: {
-    TreeEditor
+  data() {
+    return {
+      NODE_ENV: process.env.NODE_ENV
+    };
   }
 };
 </script>
