@@ -146,42 +146,42 @@ export default {
 
     const boxes = {
       id: 0,
-      width: 20,
-      height: 20,
+      width: 40,
+      height: 40,
       children: [
         {
           id: 1,
-          width: 20,
-          height: 20,
-          children: [{ id: 6, width: 200, height: 20 }]
+          width: 40,
+          height: 40,
+          children: [{ id: 6, width: 400, height: 40 }]
         },
-        { id: 2, width: 20, height: 20 },
-        { id: 3, width: 20, height: 20 },
-        { id: 4, width: 20, height: 20 },
-        { id: 5, width: 20, height: 40 }
+        { id: 2, width: 40, height: 40 },
+        { id: 3, width: 40, height: 40 },
+        { id: 4, width: 40, height: 40 },
+        { id: 5, width: 40, height: 80 }
       ]
     };
 
     const treeData = {
       id: 0,
-      width: 10,
-      height: 10,
+      width: 40,
+      height: 40,
       children: [
         {
           id: 1,
-          width: 10,
-          height: 10,
-          children: [{ id: 6, width: 190, height: 10 }]
+          width: 40,
+          height: 40,
+          children: [{ id: 6, width: 400, height: 40 }]
         },
-        { id: 2, width: 10, height: 10 },
-        { id: 3, width: 10, height: 10 },
-        { id: 4, width: 10, height: 10 },
-        { id: 5, width: 10, height: 20 }
+        { id: 2, width: 40, height: 40 },
+        { id: 3, width: 40, height: 40 },
+        { id: 4, width: 40, height: 40 },
+        { id: 5, width: 40, height: 80 }
       ]
     };
 
     this.boxes = layoutTreeData(boxes);
-    const l = new Layout(new BoundingBox(10, 5));
+    const l = new Layout(new BoundingBox(10, 20));
     this.treeData = l.layoutTreeData(treeData);
   }
 };
@@ -193,7 +193,6 @@ export default {
     position: relative;
     width: 100%;
     height: 300px;
-    transform: scale(2, 2);
     transform-origin: 0 0;
   }
 

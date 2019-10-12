@@ -39,8 +39,8 @@ export default {
     position: absolute;
     background-color: lightgray;
     box-shadow: inset 0 0 0 1px black;
-    font-size: 4px;
-    padding-left: 2px;
+    font-size: 16px;
+    text-align: center;
   }
 }
 </style>
