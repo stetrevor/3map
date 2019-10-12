@@ -28,17 +28,6 @@ export default {
         width: `${width}px`,
         height: `${height}px`
       };
-    },
-
-    connectionStyle(node, child) {
-      return {
-        left: `${child.x + child.width / 2}px`,
-        top: `${node.y + node.height}px`,
-        width: `${Math.abs(
-          node.x + node.width / 2 - (child.x + child.width / 2)
-        )}px`,
-        height: `${child.y - (node.y + node.height)}px`
-      };
     }
   }
 };
