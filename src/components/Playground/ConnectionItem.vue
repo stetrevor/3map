@@ -34,6 +34,6 @@ export default {
 <style lang="scss">
 .connection-item {
   stroke-width: 1px;
-  stroke: red;
+  stroke: black;
 }
 </style>

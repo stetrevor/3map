@@ -9,7 +9,7 @@
 
     <h4>Nodes with connections</h4>
     <div class="layout-algorithm__canvas">
-      <node-item :node="treeData" />
+      <node-item :node="treeData" :bounding-box="bb" />
       <svg
         class="layout-algorithm__connections"
         xmlns="http://www.w3.org/2000/svg"
@@ -181,8 +181,12 @@ export default {
     };
 
     this.boxes = layoutTreeData(boxes);
-    const l = new Layout(new BoundingBox(10, 20));
+
+    const bb = new BoundingBox(10, 20);
+    const l = new Layout(bb);
     this.treeData = l.layoutTreeData(treeData);
+    this.bb = bb;
+    console.log(this.treeData);
   }
 };
 </script>
