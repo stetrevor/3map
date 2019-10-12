@@ -72,19 +72,19 @@ export default {
 
     const treeData = {
       id: 0,
-      width: 10,
-      height: 10,
+      width: 20,
+      height: 20,
       children: [
         {
           id: 1,
-          width: 10,
-          height: 10,
-          children: [{ id: 6, width: 150, height: 10 }]
+          width: 20,
+          height: 20,
+          children: [{ id: 6, width: 200, height: 20 }]
         },
-        { id: 2, width: 10, height: 10 },
-        { id: 3, width: 10, height: 10 },
-        { id: 4, width: 10, height: 10 },
-        { id: 5, width: 10, height: 20 }
+        { id: 2, width: 20, height: 20 },
+        { id: 3, width: 20, height: 20 },
+        { id: 4, width: 20, height: 20 },
+        { id: 5, width: 20, height: 40 }
       ]
     };
 
