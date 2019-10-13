@@ -10,9 +10,10 @@
         v-if="editing && active"
         v-focus
         type="text"
-        v-model="item.text"
-        @keyup.enter="editing = false"
-        @keyup.esc="editing = false"
+        v-model="text"
+        @blur="doneEdit"
+        @keyup.enter="doneEdit"
+        @keyup.esc="cancelEdit"
       />
       <div class="node-item__text" v-else @dblclick="editing = true">
         {{ item.text }}
@@ -190,7 +191,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addChild", "reorderNodes"]),
+    ...mapActions(["addChild", "reorderNodes", "updateText"]),
 
     removeSelf() {
       this.$emit("remove-node", this.removeOption);
@@ -224,6 +225,20 @@ export default {
         left: `${x}px`,
         top: `${y - 24}px`
       };
+    },
+
+    doneEdit() {
+      this.editing = false;
+
+      // Because the way keyup.esc works, it will also trigger `blur` event.
+      const { item, text } = this;
+      this.updateText({ item, text });
+    },
+
+    cancelEdit() {
+      this.editing = false;
+
+      this.text = this.item.text;
     }
   },
 
@@ -233,7 +248,8 @@ export default {
       removeOption: "reparent-children",
       dialogShow: false,
       reorderingChildren: false,
-      orders: []
+      orders: [],
+      text: this.item.text
     };
   },
 
