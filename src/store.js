@@ -80,7 +80,8 @@ const store = new Vuex.Store({
     },
 
     [UPDATE_LAYOUT](state) {
-      layout.layout(state.treeData);
+      const { boundingBox } = layout.layout(state.treeData);
+      state.treeBoundingBox = boundingBox;
     }
   },
   actions: {
