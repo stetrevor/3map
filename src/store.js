@@ -77,8 +77,12 @@ const store = new Vuex.Store({
     },
 
     [RESIZE_NODE](state, { node, delta }) {
-      node.width += delta.deltaX;
-      node.height += delta.deltaY;
+      const { deltaX, deltaY } = delta;
+      const { width, height } = node;
+      const minWidth = NODE_SIZE_DEFAULT.width;
+      const minHeight = NODE_SIZE_DEFAULT.height;
+      node.width = Math.max(width + deltaX, minWidth);
+      node.height = Math.max(height + deltaY, minHeight);
     },
 
     [UPDATE_TEXT](state, { item, text }) {
