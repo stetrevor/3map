@@ -39,9 +39,10 @@ const store = new Vuex.Store({
   },
   mutations: {
     [ADD_CHILD](state, parent) {
+      const id = generateId();
       parent.children.push({
-        id: generateId(),
-        text: `New node`,
+        id,
+        text: `New node ${id}`,
         ...NODE_SIZE_DEFAULT,
         x: 0,
         y: 0,
