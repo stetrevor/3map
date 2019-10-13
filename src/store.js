@@ -31,26 +31,26 @@ const UPDATE_LAYOUT = "UPDATE_LAYOUT";
 
 const store = new Vuex.Store({
   state: {
-    treeData: {
-      id: generateId(),
-      text: "Root",
-      ...NODE_SIZE_DEFAULT,
-      x: 0,
-      y: 0,
-      children: []
-    }
+    treeData: {},
+    treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 }
   },
   mutations: {
-    [ADD_CHILD](state, parent) {
+    [ADD_CHILD](state, { parent }) {
       const id = generateId();
-      parent.children.push({
+      const node = {
         id,
         text: `New node ${id}`,
         ...NODE_SIZE_DEFAULT,
         x: 0,
         y: 0,
         children: []
-      });
+      };
+
+      if (parent) {
+        parent.children.push(node);
+      } else {
+        state.treeData = node;
+      }
     },
 
     [REMOVE_NODE](state, { parent, index, child, reparent }) {
@@ -84,8 +84,8 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    addChild({ commit }, parent) {
-      commit(ADD_CHILD, parent);
+    addChild({ commit }, payload) {
+      commit(ADD_CHILD, payload);
       commit(UPDATE_LAYOUT);
     },
 
