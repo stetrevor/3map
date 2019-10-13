@@ -185,18 +185,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addChild", "reorderNodes", "updateText"]),
+    ...mapActions(["addChild", "removeChild", "reorderNodes", "updateText"]),
 
     removeSelf() {
       this.$emit("remove-node", this.removeOption);
     },
 
-    removeNode(option, node, index) {
-      if (option === "remove-all") {
-        this.item.children.splice(index, 1);
-      } else if (option === "reparent-children") {
-        this.item.children.splice(index, 1, ...node.children);
-      }
+    removeNode(option, child, index) {
+      const reparent = option === "remove-all" ? false : true;
+      this.removeChild({ parent: this.item, index, reparent, child });
     },
 
     startReorderChildren() {
