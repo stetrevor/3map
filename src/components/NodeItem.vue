@@ -8,6 +8,7 @@
     >
       <input
         v-if="editing && active"
+        v-focus
         type="text"
         v-model="item.text"
         @keyup.enter="editing = false"
@@ -234,6 +235,14 @@ export default {
       reorderingChildren: false,
       orders: []
     };
+  },
+
+  directives: {
+    focus: {
+      inserted(el) {
+        el.focus();
+      }
+    }
   }
 };
 </script>
