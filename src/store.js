@@ -26,6 +26,7 @@ const ADD_CHILD = "ADD_CHILD";
 const REMOVE_NODE = "REMOVE_NODE";
 const REORDER_NODES = "REORDER_NODES";
 const MOVE_NODE = "MOVE_NODE";
+const RESIZE_NODE = "RESIZE_NODE";
 const UPDATE_TEXT = "UPDATE_TEXT";
 const UPDATE_LAYOUT = "UPDATE_LAYOUT";
 
@@ -75,6 +76,11 @@ const store = new Vuex.Store({
       parent.children = sorted.map(sc => sc[1]);
     },
 
+    [RESIZE_NODE](state, { node, delta }) {
+      node.width += delta.deltaX;
+      node.height += delta.deltaY;
+    },
+
     [UPDATE_TEXT](state, { item, text }) {
       item.text = text;
     },
@@ -102,6 +108,11 @@ const store = new Vuex.Store({
 
     moveNode({ commit }, payload) {
       commit(MOVE_NODE, payload);
+      commit(UPDATE_LAYOUT);
+    },
+
+    resizeNode({ commit }, payload) {
+      commit(RESIZE_NODE, payload);
       commit(UPDATE_LAYOUT);
     },
 
