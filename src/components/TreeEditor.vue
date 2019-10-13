@@ -100,10 +100,10 @@ export default {
     }),
 
     canvasSize() {
-      const { left, right, top, bottom } = this.treeBB;
+      const { right, bottom } = this.treeBB;
       return {
-        width: `${right - left}px`,
-        height: `${bottom - top}px`
+        width: `${right}px`,
+        height: `${bottom}px`
       };
     }
   },
