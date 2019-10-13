@@ -31,7 +31,7 @@
       <button
         class="node-item__add-child node-item__tool"
         v-if="active && !reorderingChildren"
-        @click="addChild(item)"
+        @click="addChild({ parent: item })"
       >
         Add child node
       </button>
