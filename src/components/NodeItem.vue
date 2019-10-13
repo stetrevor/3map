@@ -62,7 +62,7 @@
         :id="`reorder-${index}`"
       />
       <node-item
-        :key="`node-item-${index}`"
+        :key="child.id"
         :item="child"
         :move-node-tool="moveNodeTool"
         :select-tool="selectTool"
