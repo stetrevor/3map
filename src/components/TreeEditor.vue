@@ -1,5 +1,12 @@
 <template>
-  <div class="tree-editor">
+    <svg
+      class="tree-editor__connections"
+      xmlns="http://www.w3.org/2000/svg"
+      :style="canvasSize"
+    >
+      <connection-item :node="tree" />
+    </svg>
+
     <node-item
       :item="tree"
       :can-remove-self="false"
@@ -17,6 +24,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import NodeItem from "@/components/NodeItem";
+import ConnectionItem from "@/components/ConnectionItem";
 
 class MoveNodeTool {
   constructor(rootNode, moveNodeFunc) {
@@ -82,13 +90,22 @@ class SelectTool {
 }
 
 export default {
-  components: { NodeItem },
+  components: { NodeItem, ConnectionItem },
 
-  computed: mapState({
-    tree: state => state.treeData
+  computed: {
+    ...mapState({
+      tree: state => state.treeData,
+      treeBB: state => state.treeBoundingBox
   }),
 
-  methods: mapActions(["moveNode"]),
+    canvasSize() {
+      const { left, right, top, bottom } = this.treeBB;
+      return {
+        width: `${right - left}px`,
+        height: `${bottom - top}px`
+      };
+    }
+  },
 
   created() {
     this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
@@ -109,5 +126,11 @@ export default {
 <style lang="scss">
 .tree-editor {
   position: relative;
+
+  &__connections {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }
 </style>
