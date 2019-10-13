@@ -23,6 +23,7 @@ const layout = new Layout(
 );
 
 const ADD_CHILD = "ADD_CHILD";
+const REORDER_NODES = "REORDER_NODES";
 const UPDATE_LAYOUT = "UPDATE_LAYOUT";
 
 const store = new Vuex.Store({
@@ -37,7 +38,7 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    ADD_CHILD(state, parent) {
+    [ADD_CHILD](state, parent) {
       parent.children.push({
         id: generateId(),
         text: `New node`,
@@ -47,13 +48,27 @@ const store = new Vuex.Store({
         children: []
       });
     },
-    UPDATE_LAYOUT(state) {
+
+    [REORDER_NODES](state, { parent, orders }) {
+      const nodes = parent.children;
+      const sorted = orders
+        .map((order, i) => [order, nodes[i]])
+        .sort((a, b) => a[0] - b[0]);
+      parent.children = sorted.map(sc => sc[1]);
+    },
+
+    [UPDATE_LAYOUT](state) {
       layout.layout(state.treeData);
     }
   },
   actions: {
     addChild({ commit }, parent) {
       commit(ADD_CHILD, parent);
+      commit(UPDATE_LAYOUT);
+    },
+
+    reorderNodes({ commit }, payload) {
+      commit(REORDER_NODES, payload);
       commit(UPDATE_LAYOUT);
     }
   },
