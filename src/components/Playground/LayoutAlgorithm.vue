@@ -28,7 +28,7 @@ import {
   layout
 } from "non-layered-tidy-tree-layout";
 import NodeItem from "@/components/Playground/NodeItem";
-import ConnectionItem from "@/components/Playground/ConnectionItem";
+import ConnectionItem from "@/components/ConnectionItem";
 
 export default {
   components: { NodeItem, ConnectionItem },
@@ -75,11 +75,13 @@ export default {
     };
 
     const l1 = new Layout(new BoundingBox(0, 0));
-    this.boxes = l1.layoutTreeData(boxes);
+    const r = l1.layout(boxes);
+    this.boxes = r.result;
 
     const bb = new BoundingBox(10, 20);
     const l2 = new Layout(bb);
-    this.treeData = l2.layoutTreeData(treeData);
+    const r2 = l2.layout(treeData);
+    this.treeData = r2.result;
     this.bb = bb;
     console.log(this.treeData);
   }
