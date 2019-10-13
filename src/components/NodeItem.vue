@@ -83,7 +83,6 @@
         :item="child"
         :move-node-tool="moveNodeTool"
         :select-tool="selectTool"
-        :id-func="idFunc"
         @remove-node="removeNode($event, child, index)"
         @set-move-node="
           moveNodeTool.setMoveNode(child);
@@ -161,11 +160,6 @@ export default {
     canMoveSelf: {
       type: Boolean,
       default: true
-    },
-
-    idFunc: {
-      type: Function,
-      required: true
     },
 
     selectTool: {

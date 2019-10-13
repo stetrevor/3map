@@ -6,7 +6,6 @@
       :move-node-tool="moveNodeTool"
       :select-tool="selectTool"
       :can-move-self="false"
-      :id-func="generateId"
       @set-move-to="
         moveNodeTool.setMoveTo(tree);
         moveNodeTool.move();
@@ -84,19 +83,6 @@ class SelectTool {
 
 export default {
   components: { NodeItem },
-
-  methods: {
-    generateId: (() => {
-      let count = 0;
-
-      function id() {
-        count += 1;
-        return count;
-      }
-
-      return id;
-    })()
-  },
 
   computed: mapState({
     tree: state => state.treeData
