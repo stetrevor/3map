@@ -23,6 +23,7 @@ const layout = new Layout(
 );
 
 const ADD_CHILD = "ADD_CHILD";
+const UPDATE_LAYOUT = "UPDATE_LAYOUT";
 
 const store = new Vuex.Store({
   state: {
@@ -45,22 +46,18 @@ const store = new Vuex.Store({
         y: 0,
         children: []
       });
+    },
+    UPDATE_LAYOUT(state) {
+      layout.layout(state.treeData);
     }
   },
   actions: {
     addChild({ commit }, parent) {
       commit(ADD_CHILD, parent);
+      commit(UPDATE_LAYOUT);
     }
   },
   strict: process.env.NODE_ENV !== "production"
-});
-
-store.subscribe((mutation, state) => {
-  console.log(mutation.type, mutation.payload);
-  if ([ADD_CHILD].includes(mutation.type)) {
-    const r = layout.layout(state.treeData);
-    console.log(ADD_CHILD, r.result, r.boundingBox);
-  }
 });
 
 export default store;
