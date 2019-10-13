@@ -30,6 +30,8 @@ const store = new Vuex.Store({
       id: generateId(),
       text: "Root",
       ...NODE_SIZE_DEFAULT,
+      x: 0,
+      y: 0,
       children: []
     }
   },
@@ -39,6 +41,8 @@ const store = new Vuex.Store({
         id: generateId(),
         text: `New node`,
         ...NODE_SIZE_DEFAULT,
+        x: 0,
+        y: 0,
         children: []
       });
     }
