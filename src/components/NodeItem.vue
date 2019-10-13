@@ -18,6 +18,13 @@
       <div class="node-item__text" v-else @dblclick="editing = true">
         {{ item.text }}
       </div>
+
+      <button
+        v-if="moveNodeTool.availableParents.includes(item)"
+        @click="$emit('set-move-to', item)"
+      >
+        Set As Parent
+      </button>
     </div>
 
     <div class="node-item__tools">
@@ -43,13 +50,6 @@
         @click="$emit('set-move-node', item)"
       >
         Move
-      </button>
-
-      <button
-        v-if="moveNodeTool.availableParents.includes(item)"
-        @click="$emit('set-move-to', item)"
-      >
-        Set As Parent
       </button>
 
       <button
