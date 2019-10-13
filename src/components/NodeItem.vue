@@ -16,36 +16,50 @@
       <div class="node-item__text" v-else @dblclick="editing = true">
         {{ item.text }}
       </div>
+    </div>
+
+    <div class="node-item__tools">
       <button
-        class="node-item__remove-self"
+        class="node-item__add-child node-item__tool"
+        v-if="active && !reorderingChildren"
+        @click="addChild(item)"
+      >
+        Add child node
+      </button>
+
+      <button
+        class="node-item__remove-self node-item__tool"
         v-if="canRemoveSelf && active"
         @click="item.children.length ? (dialogShow = true) : removeSelf()"
       >
         Remove node
       </button>
+
       <button
+        class="node-item__tool"
         v-if="canMoveSelf && active"
         @click="$emit('set-move-node', item)"
       >
         Move
       </button>
+
       <button
         v-if="moveNodeTool.availableParents.includes(item)"
         @click="$emit('set-move-to', item)"
       >
         Set As Parent
       </button>
-    </div>
 
-    <button
-      class="node-item__reorder-children"
-      @click="reorderingChildren ? reorderChildren() : startReorderChildren()"
-      v-if="item.children.length > 1 && active"
-    >
-      {{
-        reorderingChildren ? "Reorder Children" : "Start Reordering Children"
-      }}
-    </button>
+      <button
+        class="node-item__reorder-children"
+        @click="reorderingChildren ? reorderChildren() : startReorderChildren()"
+        v-if="item.children.length > 1 && active"
+      >
+        {{
+          reorderingChildren ? "Reorder Children" : "Start Reordering Children"
+        }}
+      </button>
+    </div>
 
     <template v-for="(child, index) in item.children">
       <label
@@ -78,14 +92,6 @@
         "
       />
     </template>
-
-    <button
-      class="node-item__add-child"
-      v-if="active && !reorderingChildren"
-      @click="addChild(item)"
-    >
-      Add child node
-    </button>
 
     <base-dialog
       v-if="dialogShow"
@@ -178,16 +184,6 @@ export default {
         width: `${width}px`,
         height: `${height}px`
       };
-    },
-
-    toolStyleObject() {
-      const { x, y, width, height } = this.item;
-      return {
-        left: `${x}px`,
-        top: `${y + height}px`,
-        width: `${width}px`,
-        height: `${height}px`
-      };
     }
   },
 
@@ -246,6 +242,12 @@ export default {
     &--active {
       background-color: rgba(#2c3e50, 0.2);
     }
+  }
+
+  &__tools {
+    position: absolute;
+    margin-top: -48px;
+    display: flex;
   }
 
   &__reorder-children {
