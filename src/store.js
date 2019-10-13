@@ -24,6 +24,7 @@ const layout = new Layout(
 
 const ADD_CHILD = "ADD_CHILD";
 const REORDER_NODES = "REORDER_NODES";
+const UPDATE_TEXT = "UPDATE_TEXT";
 const UPDATE_LAYOUT = "UPDATE_LAYOUT";
 
 const store = new Vuex.Store({
@@ -58,6 +59,10 @@ const store = new Vuex.Store({
       parent.children = sorted.map(sc => sc[1]);
     },
 
+    [UPDATE_TEXT](state, { item, text }) {
+      item.text = text;
+    },
+
     [UPDATE_LAYOUT](state) {
       layout.layout(state.treeData);
     }
@@ -71,6 +76,10 @@ const store = new Vuex.Store({
     reorderNodes({ commit }, payload) {
       commit(REORDER_NODES, payload);
       commit(UPDATE_LAYOUT);
+    },
+
+    updateText({ commit }, payload) {
+      commit(UPDATE_TEXT, payload);
     }
   },
   strict: process.env.NODE_ENV !== "production"
