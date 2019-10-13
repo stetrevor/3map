@@ -4847,9 +4847,9 @@ node-sass@^4.9.0:
     stdout-stream "^1.4.0"
     "true-case-path" "^1.0.2"
 
-non-layered-tidy-tree-layout@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/non-layered-tidy-tree-layout/-/non-layered-tidy-tree-layout-1.0.0.tgz#5fd6be247cd8955a94de53bbfc7bc053ec2e3fd6"
+non-layered-tidy-tree-layout@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/non-layered-tidy-tree-layout/-/non-layered-tidy-tree-layout-2.0.0.tgz#4dd5c28a6ebeb0e9fb98bbb3ad16a29676e990f7"
 
 "nopt@2 || 3":
   version "3.0.6"
