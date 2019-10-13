@@ -62,19 +62,20 @@
     </div>
 
     <template v-for="(child, index) in item.children">
-      <label
-        :for="`reorder-${index}`"
+      <div
+        class="node-item__reorder"
+        :style="reorderStyle(child)"
+        :key="`reorder-${index}`"
         v-if="reorderingChildren"
-        :key="`label-${index}`"
-        >Reorder</label
       >
-      <input
-        type="number"
-        v-if="reorderingChildren"
-        v-model.number="orders[index]"
-        :key="`input-${index}`"
-        :id="`reorder-${index}`"
-      />
+        <label :for="`reorder-${index}`">Reorder</label>
+        <input
+          type="number"
+          v-model.number="orders[index]"
+          :id="`reorder-${index}`"
+        />
+      </div>
+
       <node-item
         :key="child.id"
         :item="child"
@@ -188,7 +189,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addChild"]),
+    ...mapActions(["addChild", "reorderNodes"]),
 
     removeSelf() {
       this.$emit("remove-node", this.removeOption);
@@ -209,13 +210,19 @@ export default {
     },
 
     reorderChildren() {
-      console.log("reorder children");
       this.reorderingChildren = false;
 
-      const sortedChildren = this.orders
-        .map((order, i) => [order, this.item.children[i]])
-        .sort((a, b) => a[0] - b[0]);
-      this.item.children = sortedChildren.map(sc => sc[1]);
+      this.reorderNodes({
+        parent: this.item,
+        orders: this.orders
+      });
+    },
+
+    reorderStyle({ x, y }) {
+      return {
+        left: `${x}px`,
+        top: `${y - 24}px`
+      };
     }
   },
 
@@ -248,6 +255,14 @@ export default {
     position: absolute;
     margin-top: -48px;
     display: flex;
+  }
+
+  &__reorder {
+    position: absolute;
+
+    input {
+      width: 32px;
+    }
   }
 
   &__reorder-children {
