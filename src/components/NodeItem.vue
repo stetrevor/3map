@@ -25,6 +25,17 @@
       >
         Set As Parent
       </button>
+
+      <template v-if="active">
+        <resize-handle
+          class="node-item__resize-handle"
+          :class="`node-item__resize-handle--${direction}`"
+          v-for="direction in ['x', 'y', 'xy']"
+          :key="direction"
+          :direction="direction"
+          @resizing="resize($event)"
+        />
+      </template>
     </div>
 
     <div class="node-item__tools">
@@ -135,11 +146,12 @@
 import { mapActions } from "vuex";
 
 import BaseDialog from "@/components/BaseDialog";
+import ResizeHandle from "@/components/ResizeHandle";
 
 export default {
   name: "node-item",
 
-  components: { BaseDialog },
+  components: { BaseDialog, ResizeHandle },
 
   props: {
     item: {
@@ -185,7 +197,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(["addChild", "removeChild", "reorderNodes", "updateText"]),
+    ...mapActions([
+      "addChild",
+      "removeChild",
+      "reorderNodes",
+      "resizeNode",
+      "updateText"
+    ]),
 
     removeSelf() {
       this.$emit("remove-node", this.removeOption);
@@ -230,6 +248,11 @@ export default {
       this.editing = false;
 
       this.text = this.item.text;
+    },
+
+    resize(delta) {
+      console.log("resizeNode", delta);
+      this.resizeNode({ node: this.item, delta });
     }
   },
 
@@ -264,6 +287,24 @@ export default {
 
     &--active {
       background-color: rgba(#2c3e50, 0.2);
+    }
+  }
+
+  &__resize-handle {
+    position: absolute;
+    transform: translate(-50%, -50%);
+
+    &--x {
+      left: 100%;
+      top: 50%;
+    }
+    &--y {
+      left: 50%;
+      top: 100%;
+    }
+    &--xy {
+      left: 100%;
+      top: 100%;
     }
   }
 
