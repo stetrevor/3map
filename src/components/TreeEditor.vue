@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import NodeItem from "@/components/NodeItem";
 
 class MoveNodeTool {
@@ -97,6 +98,10 @@ export default {
     })()
   },
 
+  computed: mapState({
+    tree: state => state.treeData
+  }),
+
   created() {
     this.moveNodeTool = new MoveNodeTool(this.tree);
     this.selectTool = new SelectTool();
@@ -105,13 +110,6 @@ export default {
 
   data() {
     return {
-      tree: {
-        id: 0,
-        text: "Root Node",
-        size: [200, 50],
-        children: []
-      },
-
       moveNodeTool: null,
 
       selectTool: null

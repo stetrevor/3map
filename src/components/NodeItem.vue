@@ -82,7 +82,7 @@
     <button
       class="node-item__add-child"
       v-if="active && !reorderingChildren"
-      @click="addChild"
+      @click="addChild(item)"
     >
       Add child node
     </button>
@@ -124,6 +124,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 import BaseDialog from "@/components/BaseDialog";
 
 export default {
@@ -169,8 +171,20 @@ export default {
     },
 
     styleObject() {
-      const [width, height] = this.item.size;
+      const { x, y, width, height } = this.item;
       return {
+        left: `${x}px`,
+        top: `${y}px`,
+        width: `${width}px`,
+        height: `${height}px`
+      };
+    },
+
+    toolStyleObject() {
+      const { x, y, width, height } = this.item;
+      return {
+        left: `${x}px`,
+        top: `${y + height}px`,
         width: `${width}px`,
         height: `${height}px`
       };
@@ -178,15 +192,7 @@ export default {
   },
 
   methods: {
-    addChild() {
-      const id = this.idFunc();
-      this.item.children.push({
-        id,
-        text: `${this.item.text}::${id}`,
-        size: [200, 50],
-        children: []
-      });
-    },
+    ...mapActions(["addChild"]),
 
     removeSelf() {
       this.$emit("remove-node", this.removeOption);
