@@ -1,4 +1,5 @@
 <template>
+  <div class="tree-editor" :style="canvasSize" v-if="tree">
     <svg
       class="tree-editor__connections"
       xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +97,7 @@ export default {
     ...mapState({
       tree: state => state.treeData,
       treeBB: state => state.treeBoundingBox
-  }),
+    }),
 
     canvasSize() {
       const { left, right, top, bottom } = this.treeBB;
@@ -107,7 +108,10 @@ export default {
     }
   },
 
+  methods: mapActions(["moveNode", "addChild"]),
+
   created() {
+    this.addChild({ parent: null });
     this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
     this.selectTool = new SelectTool();
     this.selectTool.select(this.tree);
