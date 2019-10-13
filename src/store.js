@@ -25,6 +25,7 @@ const layout = new Layout(
 const ADD_CHILD = "ADD_CHILD";
 const REMOVE_NODE = "REMOVE_NODE";
 const REORDER_NODES = "REORDER_NODES";
+const MOVE_NODE = "MOVE_NODE";
 const UPDATE_TEXT = "UPDATE_TEXT";
 const UPDATE_LAYOUT = "UPDATE_LAYOUT";
 
@@ -60,6 +61,12 @@ const store = new Vuex.Store({
       }
     },
 
+    [MOVE_NODE](state, { from, to, node }) {
+      const index = from.children.indexOf(node);
+      from.children.splice(index, 1);
+      to.children.push(node);
+    },
+
     [REORDER_NODES](state, { parent, orders }) {
       const nodes = parent.children;
       const sorted = orders
@@ -89,6 +96,11 @@ const store = new Vuex.Store({
 
     reorderNodes({ commit }, payload) {
       commit(REORDER_NODES, payload);
+      commit(UPDATE_LAYOUT);
+    },
+
+    moveNode({ commit }, payload) {
+      commit(MOVE_NODE, payload);
       commit(UPDATE_LAYOUT);
     },
 
