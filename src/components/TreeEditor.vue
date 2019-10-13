@@ -15,12 +15,13 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import NodeItem from "@/components/NodeItem";
 
 class MoveNodeTool {
-  constructor(rootNode) {
+  constructor(rootNode, moveNodeFunc) {
     this.tree = rootNode;
+    this.moveNodeFunc = moveNodeFunc;
     this.availableParents = [];
     this.from = null;
     this.to = null;
@@ -44,9 +45,8 @@ class MoveNodeTool {
     if (!this.readyToMove()) return;
 
     if (this.from.id !== this.to.id) {
-      const index = this.from.children.indexOf(this.moveNode);
-      this.from.children.splice(index, 1);
-      this.to.children.push(this.moveNode);
+      const { from, to, moveNode } = this;
+      this.moveNodeFunc({ from, to, node: moveNode });
     }
 
     this.reset();
@@ -88,8 +88,10 @@ export default {
     tree: state => state.treeData
   }),
 
+  methods: mapActions(["moveNode"]),
+
   created() {
-    this.moveNodeTool = new MoveNodeTool(this.tree);
+    this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
     this.selectTool = new SelectTool();
     this.selectTool.select(this.tree);
   },
