@@ -93,6 +93,7 @@ class SelectTool {
 }
 
 export default {
+  name: "tree-editor",
   components: { NodeItem, ConnectionItem },
 
   computed: {

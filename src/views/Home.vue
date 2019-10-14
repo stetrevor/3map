@@ -1,19 +1,12 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <tree-editor />
+    <router-view />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import TreeEditor from "@/components/TreeEditor.vue";
-
 export default {
-  name: "home",
-  components: {
-    TreeEditor
-  }
+  name: "home"
 };
 </script>
 
