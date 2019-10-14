@@ -1,24 +1,26 @@
 <template>
-  <div class="tree-editor" :style="canvasSize" v-if="tree">
-    <svg
-      class="tree-editor__connections"
-      xmlns="http://www.w3.org/2000/svg"
-      :style="canvasSize"
-    >
-      <connection-item :node="tree" />
-    </svg>
+  <div class="tree-editor" v-if="tree">
+    <div class="tree-editor__content" :style="bb">
+      <svg
+        class="tree-editor__connections"
+        xmlns="http://www.w3.org/2000/svg"
+        :style="bb"
+      >
+        <connection-item :node="tree" />
+      </svg>
 
-    <node-item
-      :item="tree"
-      :can-remove-self="false"
-      :move-node-tool="moveNodeTool"
-      :select-tool="selectTool"
-      :can-move-self="false"
-      @set-move-to="
-        moveNodeTool.setMoveTo(tree);
-        moveNodeTool.move();
-      "
-    />
+      <node-item
+        :item="tree"
+        :can-remove-self="false"
+        :move-node-tool="moveNodeTool"
+        :select-tool="selectTool"
+        :can-move-self="false"
+        @set-move-to="
+          moveNodeTool.setMoveTo(tree);
+          moveNodeTool.move();
+        "
+      />
+    </div>
   </div>
 </template>
 
@@ -99,11 +101,11 @@ export default {
       treeBB: state => state.treeBoundingBox
     }),
 
-    canvasSize() {
-      const { right, bottom } = this.treeBB;
+    bb() {
+      const { left, right, top, bottom } = this.treeBB;
       return {
-        width: `${right}px`,
-        height: `${bottom}px`
+        width: `${right - left}px`,
+        height: `${bottom - top}px`
       };
     }
   },
@@ -129,7 +131,13 @@ export default {
 
 <style lang="scss">
 .tree-editor {
-  position: relative;
+  display: flex;
+  justify-content: center;
+
+  &__content {
+    position: relative;
+    margin-top: 48px;
+  }
 
   &__connections {
     position: absolute;
