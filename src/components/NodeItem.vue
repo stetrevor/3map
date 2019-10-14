@@ -309,8 +309,13 @@ export default {
 
   &__tools {
     position: absolute;
-    margin-top: -48px;
+    left: 24px;
+    bottom: calc(100% + 16px);
+    width: 100vw;
     display: flex;
+  }
+  &__tool {
+    margin-right: 8px;
   }
 
   &__reorder {
