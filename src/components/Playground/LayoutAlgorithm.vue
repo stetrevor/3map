@@ -84,6 +84,18 @@ export default {
     this.treeData = r2.result;
     this.bb = bb;
     console.log(this.treeData);
+
+    {
+      const t3 = {
+        id: 0,
+        width: 100,
+        height: 50,
+        children: [{ id: 1, width: 50, height: 50 }]
+      };
+      const l3 = new Layout(new BoundingBox(0, 0));
+      const r3 = l3.layout(t3);
+      console.log("big root, small child", r3.result, r3.boundingBox);
+    }
   }
 };
 </script>
