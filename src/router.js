@@ -43,6 +43,10 @@ if (process.env.NODE_ENV === "development") {
       {
         path: "layout-algorithm",
         component: () => import("@/components/Playground/LayoutAlgorithm")
+      },
+      {
+        path: "idb-api",
+        component: () => import("@/components/Playground/IdbApi")
       }
     ]
   });
