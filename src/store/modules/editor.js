@@ -143,7 +143,6 @@ const actions = {
       content = await api.getContent({ id: f.contentId });
     } else {
       content = { tree: createNewNode() };
-      console.log("content", content);
       const c = await api.newContent(content);
       await api.updateFile(Object.assign(f, { contentId: c }));
     }
