@@ -1,25 +1,30 @@
 <template>
-  <div class="file-item">
-    <input type="text" v-model="name" class="file-item__edit" v-if="editing" />
-    <div class="file-item__name" v-else>{{ item.name }}</div>
-    <div class="file-item__last-modified">
-      {{ item.lastModified.toLocaleString() }}
+  <div class="file-item" @click="editing ? '' : $emit('file-open')">
+    <div class="file-item__content">
+      <input
+        type="text"
+        v-model="name"
+        class="file-item__edit"
+        v-if="editing"
+      />
+      <div class="file-item__name" v-else>{{ item.name }}</div>
+      <div class="file-item__last-modified">
+        {{ item.lastModified.toLocaleString() }}
+      </div>
     </div>
 
-    <div class="file-item__controls">
-      <button
-        class="file-item__control"
-        @click="
-          editing = !editing;
-          rename();
-        "
-      >
-        {{ editing ? "Done" : "Rename" }}
-      </button>
-      <button class="file-item__control" v-if="!editing" @click="remove">
-        Delete
-      </button>
-    </div>
+    <button
+      class="file-item__control"
+      @click.stop="
+        editing = !editing;
+        rename();
+      "
+    >
+      {{ editing ? "Done" : "Rename" }}
+    </button>
+    <button class="file-item__control" v-if="!editing" @click.stop="remove">
+      Delete
+    </button>
   </div>
 </template>
 
@@ -37,9 +42,9 @@ export default {
   methods: {
     ...mapActions(["updateFile", "deleteFile"]),
 
-    rename() {
+    async rename() {
       if (!this.editing) {
-        this.updateFile({ id: this.item.id, name: this.name });
+        await this.updateFile({ id: this.item.id, name: this.name });
       }
     },
 
@@ -59,13 +64,17 @@ export default {
 
 <style lang="scss">
 .file-item {
-  position: relative;
   box-sizing: border-box;
   padding: 8px 24px;
   height: 72px;
+  display: flex;
 
   &:hover {
     background-color: silver;
+  }
+
+  &__content {
+    flex-grow: 1;
   }
 
   &__name {
@@ -78,16 +87,13 @@ export default {
     font-size: 0.707em;
   }
 
-  &__controls {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-right: 16px;
+  &__control {
+    margin: auto;
+    margin-left: 8px;
     display: none;
   }
 
-  &:hover &__controls {
+  &:hover &__control {
     display: initial;
   }
 }
