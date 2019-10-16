@@ -1,6 +1,6 @@
 <template>
-  <div class="tree-editor" v-if="tree">
-    <div class="tree-editor__content" :style="bb">
+  <div class="tree-editor">
+    <div class="tree-editor__content" :style="bb" v-if="ready">
       <svg
         class="tree-editor__connections"
         xmlns="http://www.w3.org/2000/svg"
@@ -96,10 +96,19 @@ export default {
   name: "tree-editor",
   components: { NodeItem, ConnectionItem },
 
+  beforeRouteEnter(to, from, next) {
+    next(vm => vm.setup());
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    this.setup();
+    next();
+  },
+
   computed: {
     ...mapState({
-      tree: state => state.treeData,
-      treeBB: state => state.treeBoundingBox
+      tree: state => state.editor.treeData,
+      treeBB: state => state.editor.treeBoundingBox
     }),
 
     bb() {
@@ -111,20 +120,23 @@ export default {
     }
   },
 
-  methods: mapActions(["moveNode", "addChild"]),
+  methods: {
+    ...mapActions(["moveNode", "addChild", "getMap"]),
 
-  created() {
-    this.addChild({ parent: null });
-    this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
-    this.selectTool = new SelectTool();
-    this.selectTool.select(this.tree);
+    async setup() {
+      await this.getMap({ id: parseInt(this.$route.params.id) });
+      this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
+      this.selectTool = new SelectTool();
+      this.selectTool.select(this.tree);
+      this.ready = true;
+    }
   },
 
   data() {
     return {
       moveNodeTool: null,
-
-      selectTool: null
+      selectTool: null,
+      ready: false
     };
   }
 };
