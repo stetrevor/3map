@@ -9,7 +9,7 @@
         :item="item"
         v-for="item in files"
         :key="item.id"
-        @click.native="edit(item)"
+        @file-open="edit(item)"
       />
     </div>
   </div>
