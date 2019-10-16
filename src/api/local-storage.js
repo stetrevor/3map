@@ -22,6 +22,10 @@ export default {
     return (await dbPromise).add("files", item);
   },
 
+  async getFile({ id }) {
+    return (await dbPromise).get("files", id);
+  },
+
   async updateFile({ id, ...updates }) {
     const db = await dbPromise;
     const file = await db.get("files", id);
@@ -42,6 +46,10 @@ export default {
 
   async newContent(item) {
     return (await dbPromise).add("contents", item);
+  },
+
+  async getContent({ id }) {
+    return (await dbPromise).get("contents", id);
   },
 
   async updateContent({ id, ...updates }) {
