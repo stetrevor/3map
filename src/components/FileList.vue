@@ -1,13 +1,56 @@
 <template>
   <div class="file-list">
-    <button class="file-list__new-file">Create New Map</button>
+    <button class="file-list__new-file" @click="editNewFile">
+      Create New Map
+    </button>
+
+    <div class="file-list__list">
+      <file-item
+        :item="item"
+        v-for="item in files"
+        :key="item.id"
+        @click.native="edit(item)"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+import FileItem from "@/components/FileItem";
+
 export default {
-  name: "file-list"
+  name: "file-list",
+
+  components: { FileItem },
+
+  beforeRouteEnter(to, from, next) {
+    next(vm => vm.getAllFiles());
+  },
+
+  computed: mapState({
+    files: state => state.files.fileList
+  }),
+
+  methods: {
+    ...mapActions(["getAllFiles", "newFile"]),
+
+    async editNewFile() {
+      const file = await this.newFile();
+      this.$router.push({ name: "editor", params: { id: file } });
+    },
+
+    edit(file) {
+      this.$router.push({ name: "editor", params: { id: file.id } });
+    }
+  }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.file-list {
+  &__list {
+    margin: 12px 0;
+  }
+}
+</style>
