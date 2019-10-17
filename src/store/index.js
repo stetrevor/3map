@@ -31,7 +31,7 @@ store.subscribeAction((action, state) => {
     "removeChild",
     "reorderNodes",
     "moveNode",
-    "resizeNode",
+    "doneResize",
     "updateText"
   ];
   if (saveOperations.includes(action.type)) {
