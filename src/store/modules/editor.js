@@ -38,9 +38,10 @@ const MOVE_NODE = "MOVE_NODE";
 const RESIZE_NODE = "RESIZE_NODE";
 const UPDATE_TEXT = "UPDATE_TEXT";
 const UPDATE_LAYOUT = "UPDATE_LAYOUT";
-const SET_TREE = "SET_TREE";
+const SET_CONTENT = "SET_CONTENT";
 
 const state = {
+  contentId: null,
   treeData: null,
   treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 }
 };
@@ -96,7 +97,8 @@ const mutations = {
     state.treeBoundingBox = boundingBox;
   },
 
-  [SET_TREE](state, { tree }) {
+  [SET_CONTENT](state, { id, tree }) {
+    state.contentId = id;
     state.treeData = tree;
   }
 };
@@ -131,8 +133,8 @@ const actions = {
     commit(UPDATE_TEXT, payload);
   },
 
-  setTree({ commit }, payload) {
-    commit(SET_TREE, payload);
+  setContent({ commit }, payload) {
+    commit(SET_CONTENT, payload);
     commit(UPDATE_LAYOUT);
   },
 
@@ -146,7 +148,7 @@ const actions = {
       const c = await api.newContent(content);
       await api.updateFile(Object.assign(f, { contentId: c }));
     }
-    dispatch("setTree", content);
+    dispatch("setContent", content);
   }
 };
 
