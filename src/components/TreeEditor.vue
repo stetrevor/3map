@@ -155,6 +155,13 @@ export default {
 .tree-editor {
   display: flex;
   justify-content: center;
+  margin-top: 48px;
+
+  &__saving-status {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+  }
 
   &__content {
     position: relative;
