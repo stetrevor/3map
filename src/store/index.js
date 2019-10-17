@@ -2,7 +2,6 @@ import Vue from "vue";
 import Vuex from "vuex";
 import files from "./modules/files";
 import editor from "./modules/editor";
-import * as mt from "./mutation-types";
 
 import { Subject } from "rxjs";
 
