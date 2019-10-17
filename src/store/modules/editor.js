@@ -126,6 +126,14 @@ const actions = {
     commit(mt.UPDATE_LAYOUT);
   },
 
+  doneResize() {
+    /**
+     * This signals a serial of resize events has happened.
+     * store.subscribeAction can use this to throttle resize events,
+     * so that there are less database write involved.
+     */
+  },
+
   updateText({ commit }, payload) {
     commit(mt.UPDATE_TEXT, payload);
   },
