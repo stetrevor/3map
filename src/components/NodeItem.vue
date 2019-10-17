@@ -34,6 +34,7 @@
           :key="direction"
           :direction="direction"
           @resizing="resize($event)"
+          @resize-stop="doneResize"
         />
       </template>
     </div>
@@ -202,7 +203,8 @@ export default {
       "removeChild",
       "reorderNodes",
       "resizeNode",
-      "updateText"
+      "updateText",
+      "doneResize"
     ]),
 
     removeSelf() {
@@ -253,6 +255,10 @@ export default {
     resize(delta) {
       this.resizeNode({ node: this.item, delta });
     }
+
+    // doneResize() {
+    //   console.log("done resize");
+    // }
   },
 
   data() {
