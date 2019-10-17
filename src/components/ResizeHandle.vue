@@ -18,10 +18,20 @@ export default {
   methods: {
     startResize() {
       this.resizing = true;
+      document.documentElement.addEventListener("mouseup", this.stopResize);
+      document.documentElement.addEventListener("mouseleave", this.stopResize);
+      document.documentElement.addEventListener("mousemove", this.resize);
     },
 
     stopResize() {
       this.resizing = false;
+      this.$emit("resize-stop");
+      document.documentElement.removeEventListener("mouseup", this.stopResize);
+      document.documentElement.removeEventListener(
+        "mouseleave",
+        this.stopResize
+      );
+      document.documentElement.removeEventListener("mousemove", this.resize);
     },
 
     resize(event) {
@@ -46,18 +56,6 @@ export default {
       }
       this.$emit("resizing", { deltaX, deltaY });
     }
-  },
-
-  mounted() {
-    document.documentElement.addEventListener("mouseup", this.stopResize);
-    document.documentElement.addEventListener("mouseleave", this.stopResize);
-    document.documentElement.addEventListener("mousemove", this.resize);
-  },
-
-  beforeDestroy() {
-    document.documentElement.removeEventListener("mouseup", this.stopResize);
-    document.documentElement.removeEventListener("mouseleave", this.stopResize);
-    document.documentElement.removeEventListener("mousemove", this.resize);
   },
 
   data() {
