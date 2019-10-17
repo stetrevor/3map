@@ -21,31 +21,21 @@ const store = new Vuex.Store({
 
 const input$ = new Subject();
 
-store.subscribe((mutation, state) => {
+store.subscribeAction((action, state) => {
   /**
-   * The reason we don't need to wait for UPDATE_LAYOUT mutation is,
-   * the document only cares about node width and height, not x, y.
-   * As those will be calculated by the layout algorithm upon drawing.
-   * The x, y saved shouldn't be used directly to draw the tree.
+   * Using store.subscribeAction ensures that the calculated layout
+   * gets saved to database. It's not necessary, but it's nice to have.
    */
-  const {
-    ADD_CHILD,
-    REMOVE_NODE,
-    REORDER_NODES,
-    MOVE_NODE,
-    RESIZE_NODE,
-    UPDATE_TEXT
-  } = mt;
   const saveOperations = [
-    ADD_CHILD,
-    REMOVE_NODE,
-    REORDER_NODES,
-    MOVE_NODE,
-    RESIZE_NODE,
-    UPDATE_TEXT
+    "addChild",
+    "removeChild",
+    "reorderNodes",
+    "moveNode",
+    "resizeNode",
+    "updateText"
   ];
-  if (saveOperations.includes(mutation.type)) {
-    input$.next({ mt: mutation.type, state });
+  if (saveOperations.includes(action.type)) {
+    input$.next({ mt: action.type, state });
   }
 });
 
@@ -58,8 +48,6 @@ const saveChanges = ({ state }) => {
 };
 
 const indicator$ = getSaveIndicator(input$, saveChanges, "saving", "saved");
-
-// (state.editor.savingStatus = message)
 indicator$.subscribe(status => {
   console.log("changing saving status", status);
   store.commit("CHANGE_SAVING_STATUS", { status });
