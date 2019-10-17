@@ -1,21 +1,11 @@
 import { Layout, BoundingBox } from "non-layered-tidy-tree-layout";
+import shortid from "shortid";
 
 import api from "@/api/local-storage";
 import * as mt from "../mutation-types";
 
-const generateId = (() => {
-  let count = 0;
-
-  function id() {
-    count += 1;
-    return count;
-  }
-
-  return id;
-})();
-
 const createNewNode = () => {
-  const id = generateId();
+  const id = shortid.generate();
   return {
     id,
     text: `New node ${id}`,
