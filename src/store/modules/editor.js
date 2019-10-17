@@ -1,6 +1,7 @@
 import { Layout, BoundingBox } from "non-layered-tidy-tree-layout";
 
 import api from "@/api/local-storage";
+import * as mt from "../mutation-types";
 
 const generateId = (() => {
   let count = 0;
@@ -31,15 +32,6 @@ const layout = new Layout(
   new BoundingBox(NODE_BOUNDING_BOX.gap, NODE_BOUNDING_BOX.bottomPadding)
 );
 
-const ADD_CHILD = "ADD_CHILD";
-const REMOVE_NODE = "REMOVE_NODE";
-const REORDER_NODES = "REORDER_NODES";
-const MOVE_NODE = "MOVE_NODE";
-const RESIZE_NODE = "RESIZE_NODE";
-const UPDATE_TEXT = "UPDATE_TEXT";
-const UPDATE_LAYOUT = "UPDATE_LAYOUT";
-const SET_CONTENT = "SET_CONTENT";
-
 const state = {
   contentId: null,
   treeData: null,
@@ -47,7 +39,7 @@ const state = {
 };
 
 const mutations = {
-  [ADD_CHILD](state, { parent }) {
+  [mt.ADD_CHILD](state, { parent }) {
     const node = createNewNode();
 
     if (parent) {
@@ -57,7 +49,7 @@ const mutations = {
     }
   },
 
-  [REMOVE_NODE](state, { parent, index, child, reparent }) {
+  [mt.REMOVE_NODE](state, { parent, index, child, reparent }) {
     if (reparent) {
       parent.children.splice(index, 1, ...child.children);
     } else {
@@ -65,13 +57,13 @@ const mutations = {
     }
   },
 
-  [MOVE_NODE](state, { from, to, node }) {
+  [mt.MOVE_NODE](state, { from, to, node }) {
     const index = from.children.indexOf(node);
     from.children.splice(index, 1);
     to.children.push(node);
   },
 
-  [REORDER_NODES](state, { parent, orders }) {
+  [mt.REORDER_NODES](state, { parent, orders }) {
     const nodes = parent.children;
     const sorted = orders
       .map((order, i) => [order, nodes[i]])
@@ -79,7 +71,7 @@ const mutations = {
     parent.children = sorted.map(sc => sc[1]);
   },
 
-  [RESIZE_NODE](state, { node, delta }) {
+  [mt.RESIZE_NODE](state, { node, delta }) {
     const { deltaX, deltaY } = delta;
     const { width, height } = node;
     const minWidth = NODE_SIZE_DEFAULT.width;
@@ -88,54 +80,58 @@ const mutations = {
     node.height = Math.max(height + deltaY, minHeight);
   },
 
-  [UPDATE_TEXT](state, { item, text }) {
+  [mt.UPDATE_TEXT](state, { item, text }) {
     item.text = text;
   },
 
-  [UPDATE_LAYOUT](state) {
+  [mt.UPDATE_LAYOUT](state) {
     const { boundingBox } = layout.layout(state.treeData);
     state.treeBoundingBox = boundingBox;
   },
 
-  [SET_CONTENT](state, { id, tree }) {
+  [mt.SET_CONTENT](state, { id, tree }) {
     state.contentId = id;
     state.treeData = tree;
+  },
+
+  [mt.CHANGE_SAVING_STATUS](state, { status }) {
+    state.savingStatus = status;
   }
 };
 
 const actions = {
   addChild({ commit }, payload) {
-    commit(ADD_CHILD, payload);
-    commit(UPDATE_LAYOUT);
+    commit(mt.ADD_CHILD, payload);
+    commit(mt.UPDATE_LAYOUT);
   },
 
   removeChild({ commit }, payload) {
-    commit(REMOVE_NODE, payload);
-    commit(UPDATE_LAYOUT);
+    commit(mt.REMOVE_NODE, payload);
+    commit(mt.UPDATE_LAYOUT);
   },
 
   reorderNodes({ commit }, payload) {
-    commit(REORDER_NODES, payload);
-    commit(UPDATE_LAYOUT);
+    commit(mt.REORDER_NODES, payload);
+    commit(mt.UPDATE_LAYOUT);
   },
 
   moveNode({ commit }, payload) {
-    commit(MOVE_NODE, payload);
-    commit(UPDATE_LAYOUT);
+    commit(mt.MOVE_NODE, payload);
+    commit(mt.UPDATE_LAYOUT);
   },
 
   resizeNode({ commit }, payload) {
-    commit(RESIZE_NODE, payload);
-    commit(UPDATE_LAYOUT);
+    commit(mt.RESIZE_NODE, payload);
+    commit(mt.UPDATE_LAYOUT);
   },
 
   updateText({ commit }, payload) {
-    commit(UPDATE_TEXT, payload);
+    commit(mt.UPDATE_TEXT, payload);
   },
 
   setContent({ commit }, payload) {
-    commit(SET_CONTENT, payload);
-    commit(UPDATE_LAYOUT);
+    commit(mt.SET_CONTENT, payload);
+    commit(mt.UPDATE_LAYOUT);
   },
 
   async getMap({ dispatch }, payload) {
