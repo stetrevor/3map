@@ -138,12 +138,13 @@ const actions = {
     let content;
     if (f.contentId) {
       content = await api.getContent({ id: f.contentId });
+      dispatch("setContent", content);
     } else {
       content = { tree: createNewNode() };
       const c = await api.newContent(content);
-      await api.updateFile(Object.assign(f, { contentId: c }));
+      dispatch("setContent", Object.assign(content, { id: c }));
+      api.updateFile(Object.assign(f, { contentId: c }));
     }
-    dispatch("setContent", content);
   }
 };
 
