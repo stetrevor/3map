@@ -35,7 +35,8 @@ const layout = new Layout(
 const state = {
   contentId: null,
   treeData: null,
-  treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 }
+  treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 },
+  savingStatus: ""
 };
 
 const mutations = {
