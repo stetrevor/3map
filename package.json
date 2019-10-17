@@ -10,7 +10,7 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "idb": "^4.0.5",
-    "non-layered-tidy-tree-layout": "^2.0.1",
+    "non-layered-tidy-tree-layout": "^2.0.2",
     "rxjs": "^6.5.3",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
