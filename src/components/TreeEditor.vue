@@ -1,7 +1,7 @@
 <template>
   <div class="tree-editor">
     <div class="tree-editor__saving-status">{{ savingStatus }}</div>
-    <div class="tree-editor__content" :style="bb" v-if="ready">
+    <div class="tree-editor__content" :style="contentBB" v-if="ready">
       <svg
         class="tree-editor__connections"
         xmlns="http://www.w3.org/2000/svg"
@@ -126,6 +126,15 @@ export default {
         width: `${right - left}px`,
         height: `${bottom - top}px`
       };
+    },
+
+    contentBB() {
+      const { left, right, top, bottom } = this.treeBB;
+      return {
+        width: `${right - left}px`,
+        height: `${bottom - top}px`,
+        transform: `translateX(${-left}px)`
+      };
     }
   },
 
@@ -153,9 +162,9 @@ export default {
 
 <style lang="scss">
 .tree-editor {
-  display: flex;
-  justify-content: center;
+  position: relative;
   margin-top: 48px;
+  padding-top: 48px;
 
   &__saving-status {
     position: absolute;
