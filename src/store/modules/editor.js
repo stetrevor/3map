@@ -16,7 +16,7 @@ const createNewNode = () => {
   };
 };
 
-const NODE_BOUNDING_BOX = { gap: 20, bottomPadding: 40 };
+const NODE_BOUNDING_BOX = { gap: 32, bottomPadding: 64 };
 const NODE_SIZE_DEFAULT = { width: 100, height: 50 };
 const layout = new Layout(
   new BoundingBox(NODE_BOUNDING_BOX.gap, NODE_BOUNDING_BOX.bottomPadding)
