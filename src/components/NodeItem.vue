@@ -255,10 +255,6 @@ export default {
     resize(delta) {
       this.resizeNode({ node: this.item, delta });
     }
-
-    // doneResize() {
-    //   console.log("done resize");
-    // }
   },
 
   data() {
