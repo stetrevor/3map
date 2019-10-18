@@ -20,6 +20,7 @@
       </div>
 
       <button
+        class="node-item__move-to"
         v-if="moveNodeTool.availableParents.includes(item)"
         @click="$emit('set-move-to', item)"
       >
@@ -289,6 +290,15 @@ export default {
     &--active {
       background-color: rgba(#2c3e50, 0.2);
     }
+  }
+
+  &__move-to {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid red;
+    border-radius: 4px;
   }
 
   &__resize-handle {
