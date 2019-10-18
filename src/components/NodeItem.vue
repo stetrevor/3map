@@ -6,14 +6,12 @@
       @click="selectTool.select(item)"
       :style="styleObject"
     >
-      <input
+      <textarea
+        class="node-item__edit"
         v-if="editing && active"
         v-focus
-        type="text"
+        :placeholder="text"
         v-model="text"
-        @blur="doneEdit"
-        @keyup.enter="doneEdit"
-        @keyup.esc="cancelEdit"
       />
       <div class="node-item__text" v-else @dblclick="editing = true">
         {{ item.text }}
@@ -25,6 +23,25 @@
         @click="$emit('set-move-to', item)"
       >
         Set As Parent
+      </button>
+
+      <button
+        class="node-item__edit-text node-item__tool"
+        v-if="
+          active &&
+            !editing &&
+            !reorderingChildren &&
+            moveNodeTool.from === null
+        "
+        @click="editing = true"
+      >
+        Edit Content
+      </button>
+      <button class="node-item__save-text" v-if="editing" @click="doneEdit">
+        Save
+      </button>
+      <button v-if="editing" @click="cancelEdit">
+        Cancel
       </button>
 
       <template v-if="active">
@@ -292,6 +309,13 @@ export default {
     }
   }
 
+  &__edit {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    resize: none;
+  }
+
   &__move-to {
     position: absolute;
     bottom: calc(100% + 8px);
@@ -299,6 +323,17 @@ export default {
     transform: translateX(-50%);
     border: 1px solid red;
     border-radius: 4px;
+  }
+
+  &__edit-text {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 8px;
+    border: 1px solid deepskyblue;
+    border-radius: 4px;
+  }
+  &__save-text {
+    margin-right: 8px;
   }
 
   &__resize-handle {
@@ -322,7 +357,7 @@ export default {
   &__tools {
     position: absolute;
     left: 24px;
-    bottom: calc(100% + 16px);
+    bottom: calc(100% + 48px);
     width: 100vw;
     display: flex;
   }
@@ -336,12 +371,6 @@ export default {
     input {
       width: 32px;
     }
-  }
-
-  &__reorder-children {
-    display: block;
-    border-color: red;
-    border-radius: 4px;
   }
 }
 </style>
