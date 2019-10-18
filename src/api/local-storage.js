@@ -52,12 +52,10 @@ export default {
     return (await dbPromise).get("contents", id);
   },
 
-  async updateContent({ id, ...updates }) {
+  async updateContent(updates) {
     const db = await dbPromise;
-    const content = await db.get("contents", id);
-    Object.assign(content, updates);
-    await db.put("contents", content);
-    const file = await db.getFromIndex("files", "contentId", id);
+    await db.put("contents", updates);
+    const file = await db.getFromIndex("files", "contentId", updates.id);
     file.lastModified = new Date();
     return db.put("files", file);
   }
