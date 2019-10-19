@@ -6,7 +6,7 @@
 
     <div v-for="p in progress" :key="p.refPath">
       <h4>{{ p.refPath }}</h4>
-      <progress max="100" :value="p.progress" />
+      <progress max="1" :value="p.progress" />
       <a :href="p.downloadURL" v-if="p.downloadURL">{{ p.downloadURL }}</a>
     </div>
   </div>
