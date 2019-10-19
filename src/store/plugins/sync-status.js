@@ -1,5 +1,5 @@
 import { Subject, merge } from "rxjs";
-import { flatMap, map, filter } from "rxjs/operators";
+import { flatMap, map, filter, groupBy, switchMap } from "rxjs/operators";
 
 import api from "@/api/firebase";
 import {
@@ -11,9 +11,11 @@ export default function createSyncStatusPlugin() {
   return store => {
     let ongoing = 0;
 
-    const uploads$ = new Subject();
+    const uploads$ = new Subject().pipe(groupBy(file => file.name));
     const inProgress$ = uploads$.pipe(map(() => ++ongoing));
-    const tasks$ = uploads$.pipe(flatMap(file => api.uploadFile(file)));
+    const tasks$ = uploads$.pipe(
+      flatMap(group$ => group$.pipe(switchMap(file => api.uploadFile(file))))
+    );
     const completed$ = tasks$.pipe(
       filter(state => state.success),
       map(() => --ongoing)
