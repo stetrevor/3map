@@ -1,10 +1,12 @@
+import Vue from "vue";
+
 import * as mt from "../mutation-types";
 
 const state = {
   /**
    * key: refFullPath,
    * value: {
-   *   state: 'running' or 'paused',
+   *   success: true, // sentinel value to calculate ongoing upload count
    *   progress: 0 - 1.0
    *   downloadURL: 'http://download.com/ref.name'
    * }
@@ -13,11 +15,15 @@ const state = {
   ongoingUploads: 0
 };
 
-const getters = {};
+const getters = {
+  progress(state) {
+    return Object.values(state.status);
+  }
+};
 
 const mutations = {
   [mt.UPDATE_UPLOAD_STATUS](state, status) {
-    state.status[status.refPath] = status;
+    Vue.set(state.status, status.refPath, status);
   },
 
   [mt.UPDATE_UPLOADS_IN_PROGRESS_COUNT](state, { count }) {
