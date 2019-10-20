@@ -27,6 +27,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   // text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 24px;
+
+  #nav {
+    margin-bottom: 48px;
+  }
+
+  a.router-link-active {
+    color: #3eaf7c;
+  }
 }
 </style>
