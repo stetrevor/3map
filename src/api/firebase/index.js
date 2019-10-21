@@ -7,10 +7,26 @@ const firebase = initFirebase();
 const storageRef = firebase.storage().ref();
 
 export default {
-  uploadFile(file) {
+  /**
+   * Return an Observable that emits upload progress and success status.
+   *
+   * If `file` is provided, `string` is ignored.
+   *
+   * @param {String} refPath Required. The full path where the upload destination is.
+   * @param {File, Blob, Uint8Array} file A file object like the one from <input> file.
+   * @param {String} string Raw string content to put in refPath.
+   * @param {Object} metadata Key value pairs containing metadata, like file name to be displayed.
+   */
+  uploadFile({ file, string, metadata, refPath }) {
     return Observable.create(observer => {
-      const refPath = file.name;
-      const uploadTask = storageRef.child(refPath).put(file);
+      let uploadTask;
+      if (file) {
+        uploadTask = storageRef.child(refPath).put(file, metadata);
+      } else {
+        uploadTask = storageRef
+          .child(refPath)
+          .putString(btoa(string), "base64", metadata);
+      }
 
       uploadTask.on(
         "state_changed",
