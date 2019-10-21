@@ -145,6 +145,19 @@ const actions = {
       dispatch("setContent", Object.assign(content, { id: c }));
       api.updateFile(Object.assign(f, { contentId: c }));
     }
+  },
+
+  upload3MapFile({ dispatch, state }) {
+    /**
+     * Use uploadFiles to handle upload action.
+     */
+    dispatch("uploadFiles", [
+      {
+        refPath: state.file.refPath,
+        metadata: { customMetadata: { filename: state.file.name } },
+        string: JSON.stringify(state.treeData)
+      }
+    ]);
   }
 };
 
