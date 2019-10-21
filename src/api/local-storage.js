@@ -3,8 +3,7 @@ import { openDB } from "idb";
 const dbPromise = openDB("3map", 1, {
   upgrade(db) {
     const files = db.createObjectStore("files", {
-      keyPath: "id",
-      autoIncrement: true
+      keyPath: "refPath"
     });
     files.createIndex("lastModified", "lastModified");
     files.createIndex("contentId", "contentId");
