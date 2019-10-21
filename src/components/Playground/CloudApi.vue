@@ -37,8 +37,7 @@ export default {
   methods: {
     ...mapActions(["uploadMap", "new3MapFile"]),
 
-    generateFileIdentifier() {
-      this.fileId = api.generateFileIdentifier();
+      this.fileId = api.generateFileId();
     },
 
     async createMap() {
