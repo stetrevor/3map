@@ -4,7 +4,7 @@
     <div class="cloud-api__demos">
       <div>
         <h4>Generate File Id: {{ fileId }}</h4>
-        <button @click="generateFileIdentifier">Generate</button>
+        <button @click="getFileId">Generate</button>
       </div>
       <div>
         <h4>Create a map file</h4>
@@ -37,6 +37,7 @@ export default {
   methods: {
     ...mapActions(["uploadMap", "new3MapFile"]),
 
+    getFileId() {
       this.fileId = api.generateFileId();
     },
 
