@@ -16,8 +16,7 @@ const dbPromise = openDB("3map", 1, {
 });
 
 export default {
-  async newFile(item) {
-    item.lastModified = new Date();
+  async new3MapFile(item) {
     return (await dbPromise).add("files", item);
   },
 
