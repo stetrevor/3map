@@ -16,9 +16,11 @@ const state = {
 };
 
 const getters = {
-  progress(state) {
+  progressAll(state) {
     return Object.values(state.status);
-  }
+  },
+
+  progress: state => refPath => state.status[refPath]
 };
 
 const mutations = {
