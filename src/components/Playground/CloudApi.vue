@@ -27,8 +27,9 @@
       </div>
 
       <div>
-        <h4>3. Download the map</h4>
-        <button>Download</button>
+        <h4>3. Display map content</h4>
+        <button @click="getMapContent">Display</button>
+        <textarea v-model="mapContent" v-if="uploadProgress" />
       </div>
       <button>List maps</button>
       <button>Rename a map</button>
@@ -74,6 +75,12 @@ export default {
           string: JSON.stringify(this.map)
         }
       ]);
+    },
+
+    async getMapContent() {
+      const resp = await fetch(this.uploadProgress.downloadURL);
+      const content = await resp.json();
+      this.mapContent = JSON.stringify(content);
     }
   },
 
@@ -89,7 +96,8 @@ export default {
         children: []
       },
       fileId: null,
-      mapFile: { name: "", refPath: "" }
+      mapFile: { name: "", refPath: "" },
+      mapContent: ""
     };
   }
 };
