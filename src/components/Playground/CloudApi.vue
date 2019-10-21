@@ -7,15 +7,29 @@
         <button @click="getFileId">Generate</button>
       </div>
       <div>
-        <h4>Create a map file</h4>
+        <h4>1. Create a map file</h4>
         <button @click="createMap">Create file</button>
         <div>
           Name: <span>{{ mapFile.name }}</span> refPath:
           <span>{{ mapFile.refPath }}</span>
         </div>
       </div>
-      <button @click="uploadMap(map)">Upload a map</button>
-      <button>Download a map</button>
+      <div>
+        <h4>2. Upload the map file</h4>
+        <button @click="uploadMap">Upload a map</button>
+
+        <template v-if="uploadProgress">
+          <progress max="1" :value="uploadProgress.progress" />
+          <a :href="uploadProgress.downloadURL">{{
+            uploadProgress.downloadURL
+          }}</a>
+        </template>
+      </div>
+
+      <div>
+        <h4>3. Download the map</h4>
+        <button>Download</button>
+      </div>
       <button>List maps</button>
       <button>Rename a map</button>
       <button>Upload a map resource</button>
@@ -29,13 +43,20 @@
 
 <script>
 import api from "@/api";
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "cloud-api",
 
+  computed: {
+    ...mapGetters(["progress"]),
+    uploadProgress() {
+      return this.progress(this.mapFile.refPath);
+    }
+  },
+
   methods: {
-    ...mapActions(["uploadMap", "new3MapFile"]),
+    ...mapActions(["new3MapFile", "uploadFiles"]),
 
     getFileId() {
       this.fileId = api.generateFileId();
@@ -43,23 +64,29 @@ export default {
 
     async createMap() {
       this.mapFile = await this.new3MapFile();
+    },
+
+    uploadMap() {
+      this.uploadFiles([
+        {
+          refPath: this.mapFile.refPath,
+          metadata: { customMetadata: { filename: this.mapFile.name } },
+          string: JSON.stringify(this.map)
+        }
+      ]);
     }
   },
 
   data() {
     return {
       map: {
-        refPath: "get a refPath somewhere or set this as empty",
-        filename: "a whole new map",
-        string: JSON.stringify({
-          id: 0,
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 50,
-          text: "Hello World",
-          children: []
-        })
+        id: 0,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 50,
+        text: "Hello World",
+        children: []
       },
       fileId: null,
       mapFile: { name: "", refPath: "" }
