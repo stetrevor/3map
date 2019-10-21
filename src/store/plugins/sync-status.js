@@ -1,7 +1,7 @@
 import { Subject, merge } from "rxjs";
 import { flatMap, map, filter, groupBy, switchMap } from "rxjs/operators";
 
-import api from "@/api/firebase";
+import api from "@/api";
 import {
   UPDATE_UPLOADS_IN_PROGRESS_COUNT,
   UPDATE_UPLOAD_STATUS
@@ -11,10 +11,12 @@ export default function createSyncStatusPlugin() {
   return store => {
     let ongoing = 0;
 
-    const uploads$ = new Subject().pipe(groupBy(file => file.name));
+    const uploads$ = new Subject().pipe(groupBy(fileInfo => fileInfo.refPath));
     const inProgress$ = uploads$.pipe(map(() => ++ongoing));
     const tasks$ = uploads$.pipe(
-      flatMap(group$ => group$.pipe(switchMap(file => api.uploadFile(file))))
+      flatMap(group$ =>
+        group$.pipe(switchMap(fileInfo => api.cloud.uploadFile(fileInfo)))
+      )
     );
     const completed$ = tasks$.pipe(
       filter(state => state.success),
@@ -32,8 +34,9 @@ export default function createSyncStatusPlugin() {
     store.subscribeAction(action => {
       if (action.type === "uploadFiles") {
         console.log("got files to upload", action.payload);
-        for (const file of action.payload) {
-          uploads$.next(file);
+        // Intercept and construct api.uploadFile parameters.
+        for (const fileInfo of action.payload) {
+          uploads$.next(fileInfo);
         }
       }
     });
