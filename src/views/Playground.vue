@@ -6,6 +6,8 @@
     <router-link to="firebase-cloud-storage"
       >Firebase Cloud Storage</router-link
     >
+    |
+    <router-link to="cloud-api">Cloud API</router-link>
 
     <router-view />
   </div>

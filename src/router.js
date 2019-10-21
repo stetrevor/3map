@@ -52,6 +52,10 @@ if (process.env.NODE_ENV === "development") {
       {
         path: "firebase-cloud-storage",
         component: () => import("@/components/Playground/FirebaseCloud")
+      },
+      {
+        path: "cloud-api",
+        component: () => import("@/components/Playground/CloudApi")
       }
     ]
   });
