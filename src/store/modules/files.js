@@ -1,4 +1,4 @@
-import api from "@/api/local-storage.js";
+import api from "@/api";
 
 const GET_ALL_FILES = "GET_ALL_FILES";
 
@@ -29,8 +29,13 @@ const actions = {
     return dispatch("getAllFiles");
   },
 
-  async newFile() {
-    return api.newFile({ name: "Untitled" });
+  async new3MapFile() {
+    const f = {
+      name: "Untitled",
+      refPath: api.generateFileId() + "/index.json"
+    };
+    await api.local.new3MapFile(f);
+    return f;
   }
 };
 
