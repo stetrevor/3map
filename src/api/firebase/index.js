@@ -1,5 +1,6 @@
 import "firebase/storage";
-import { Observable } from "rxjs";
+import { Observable, from, concat } from "rxjs";
+import { pluck, flatMap, map } from "rxjs/operators";
 
 import shortid from "shortid";
 
@@ -8,6 +9,15 @@ import initFirebase from "./config";
 const firebase = initFirebase();
 const storageRef = firebase.storage().ref();
 const userRef = storageRef.child("users/testuser");
+
+/**
+ * Return an Observable that emit the metadata of a Firebase storage object.
+ *
+ * @param {Object} ref The ref to the object
+ */
+function getMetadata(ref) {
+  return from(ref.getMetadata());
+}
 
 export default {
   /**
@@ -68,5 +78,39 @@ export default {
     const resourceRefPath = name => dir + name;
 
     return { mapRefPath, resourceRefPath };
+  },
+
+  /**
+   * Return an Observable that emit each map file item like this:
+   * {
+   *   refPath: 'file/refpath',
+   *   metadata: { filename: 'filename' }, and other fields.
+   * }
+   * On complete, it emits an object { nextPageToke: 'nextpagetoken' }.
+   *
+   * @param {string} nextPageToken Token used by firebase list() API.
+   */
+  nextPageMapFiles({ nextPageToken }) {
+    const page$ = from(
+      userRef.list({
+        maxResults: 2,
+        pageToken: nextPageToken
+      })
+    );
+    const metadata$ = page$.pipe(
+      pluck("prefixes"),
+      flatMap(prefixes => from(prefixes)),
+      flatMap(prefix => getMetadata(prefix.child("index.json"))),
+      map(({ fullPath, customMetadata, updated }) => ({
+        fullPath,
+        filename: customMetadata.filename,
+        updated
+      }))
+    );
+    const token$ = page$.pipe(
+      pluck("nextPageToken"),
+      map(nextPageToken => ({ nextPageToken }))
+    );
+    return concat(metadata$, token$);
   }
 };
