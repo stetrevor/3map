@@ -12,7 +12,9 @@ const state = {
    * }
    */
   status: {},
-  ongoingUploads: 0
+  ongoingUploads: 0,
+  pagination: { done: false, nextPageToken: "" },
+  mapFileList: []
 };
 
 const getters = {
@@ -20,7 +22,16 @@ const getters = {
     return Object.values(state.status);
   },
 
-  progress: state => refPath => state.status[refPath]
+  progress: state => refPath => state.status[refPath],
+
+  pagination(state) {
+    return state.pagination;
+  },
+
+  mapFileList(state) {
+    // sort it here
+    return state.mapFileList;
+  }
 };
 
 const mutations = {
@@ -30,6 +41,17 @@ const mutations = {
 
   [mt.UPDATE_UPLOADS_IN_PROGRESS_COUNT](state, { count }) {
     state.ongoingUploads = count;
+  },
+
+  [mt.UPDATE_NEXT_PAGE_TOKEN](state, { nextPageToken }) {
+    if (!nextPageToken) {
+      state.pagination.done = true;
+    }
+    state.pagination.nextPageToken = nextPageToken;
+  },
+
+  [mt.ADD_TO_MAP_FILE_LIST](state, metadata) {
+    state.mapFileList.push(metadata);
   }
 };
 
@@ -39,6 +61,22 @@ const actions = {
      * Sentinel action for sync status plugin.
      * So no action needs to be taken here.
      */
+  },
+
+  getNextPageMapFiles() {
+    /**
+     * Sentinel action for sync status plugin.
+     * So no action needs to be taken here.
+     */
+  },
+
+  addToMapFileList({ commit, dispatch }, payload) {
+    commit(mt.ADD_TO_MAP_FILE_LIST, payload);
+    dispatch("addToLocalMapFileList", payload);
+  },
+
+  addToLocalMapFileList() {
+    //TODO: add to local db
   }
 };
 
