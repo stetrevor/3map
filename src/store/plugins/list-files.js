@@ -6,21 +6,21 @@ import { UPDATE_NEXT_PAGE_TOKEN } from "../mutation-types";
 
 export default function createListFilesPlugin() {
   return store => {
-    const source$ = new Subject();
+    const tokens$ = new Subject();
 
-    const fileItems$ = source$.pipe(flatMap(api.cloud.nextPageMapFiles));
+    const fileItems$ = tokens$.pipe(flatMap(api.cloud.nextPageMapFiles));
 
     fileItems$.subscribe(item => {
       if ("nextPageToken" in item) {
         store.commit(UPDATE_NEXT_PAGE_TOKEN, item);
       } else {
-        store.dispatch("addToMapFileList", item);
+        store.dispatch("addToMapFileListLocal", item);
       }
     });
 
     store.subscribeAction(action => {
       if (action.type === "getNextPageMapFiles") {
-        source$.next(action.payload);
+        tokens$.next(action.payload);
       }
     });
   };
