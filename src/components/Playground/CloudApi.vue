@@ -31,7 +31,19 @@
         <button @click="getMapContent">Display</button>
         <textarea v-model="mapContent" v-if="uploadProgress" />
       </div>
-      <button>List maps</button>
+
+      <div>
+        <h4>Display all maps from cloud</h4>
+        <button @click="nextPage" :disabled="pagination.done">
+          List maps
+        </button>
+        <ul>
+          <li v-for="file in mapFileList" :key="file.fullPath">
+            <span>{{ file.filename }}</span> - <span>{{ file.updated }}</span>
+          </li>
+        </ul>
+      </div>
+
       <button>Rename a map</button>
       <button>Upload a map resource</button>
       <button>Download a map resource</button>
@@ -50,14 +62,15 @@ export default {
   name: "cloud-api",
 
   computed: {
-    ...mapGetters(["progress"]),
+    ...mapGetters(["progress", "pagination", "mapFileList"]),
+
     uploadProgress() {
       return this.progress(this.mapFile.refPath);
     }
   },
 
   methods: {
-    ...mapActions(["new3MapFile", "uploadFiles"]),
+    ...mapActions(["new3MapFile", "uploadFiles", "getNextPageMapFiles"]),
 
     getFileId() {
       this.fileId = api.generateFileId();
@@ -81,6 +94,10 @@ export default {
       const resp = await fetch(this.uploadProgress.downloadURL);
       const content = await resp.json();
       this.mapContent = JSON.stringify(content);
+    },
+
+    nextPage() {
+      this.getNextPageMapFiles(this.pagination);
     }
   },
 
@@ -97,7 +114,8 @@ export default {
       },
       fileId: null,
       mapFile: { name: "", refPath: "" },
-      mapContent: ""
+      mapContent: "",
+      allMapFiles: []
     };
   }
 };
