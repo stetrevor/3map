@@ -7,6 +7,7 @@ import initFirebase from "./config";
 
 const firebase = initFirebase();
 const storageRef = firebase.storage().ref();
+const userRef = storageRef.child("users/testuser");
 
 export default {
   /**
@@ -23,9 +24,9 @@ export default {
     return Observable.create(observer => {
       let uploadTask;
       if (file) {
-        uploadTask = storageRef.child(refPath).put(file, metadata);
+        uploadTask = userRef.child(refPath).put(file, metadata);
       } else {
-        uploadTask = storageRef
+        uploadTask = userRef
           .child(refPath)
           .putString(btoa(string), "base64", metadata);
       }
@@ -44,6 +45,7 @@ export default {
         }
       );
     });
+  },
 
   /**
    * Return refPaths used by a 3map file.
