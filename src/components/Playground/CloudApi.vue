@@ -66,12 +66,20 @@
             width="400"
             height="300"
           />
-          <div>{{ resourceStatus(res).downloadURL }}</div>
+          <div>{{ resourceStatus(res).refPath }}</div>
           <progress max="1" :value="resourceStatus(res).progress || 0" />
         </div>
       </div>
 
-      <button>Download a map resource</button>
+      <div>
+        <h4>Download a map resource</h4>
+        <input v-model="resRefPath" placeholder="resource refPath" />
+        <button @click="download">
+          Download
+        </button>
+        <img :src="resURL" />
+      </div>
+
       <button>Delete a map resource</button>
       <button>Rename a map resource</button>
       <button>List map resources</button>
@@ -141,6 +149,12 @@ export default {
 
     nextPage() {
       this.getNextPageMapFiles(this.pagination);
+    },
+
+    async download() {
+      this.resURL = await api.cloud.getDownloadURL({
+        refPath: this.resRefPath
+      });
     }
   },
 
@@ -159,7 +173,9 @@ export default {
       mapFile: { name: "", refPath: "" },
       mapContent: "",
       allMapFiles: [],
-      renameTo: ""
+      renameTo: "",
+      resRefPath: "",
+      resURL: ""
     };
   }
 };
