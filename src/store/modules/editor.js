@@ -1,7 +1,7 @@
 import { Layout, BoundingBox } from "non-layered-tidy-tree-layout";
 import shortid from "shortid";
 
-import api from "@/api/local-storage";
+import api from "@/api";
 import * as mt from "../mutation-types";
 
 const createNewNode = () => {
@@ -26,7 +26,8 @@ const state = {
   contentId: null,
   treeData: null,
   treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 },
-  savingStatus: ""
+  savingStatus: "",
+  file: { refPath: "", name: "" } // refPath and name fields
 };
 
 const mutations = {
@@ -85,6 +86,11 @@ const mutations = {
     state.treeData = tree;
   },
 
+  [mt.SET_FILE](state, { refPath, name }) {
+    state.file.refPath = refPath;
+    state.file.name = name;
+  },
+
   [mt.CHANGE_SAVING_STATUS](state, { status }) {
     state.savingStatus = status;
   }
@@ -133,17 +139,23 @@ const actions = {
     commit(mt.UPDATE_LAYOUT);
   },
 
+  setFile({ commit }, payload) {
+    commit(mt.SET_FILE, payload);
+  },
+
   async getMap({ dispatch }, payload) {
-    const f = await api.getFile(payload);
+    const f = await api.local.getFile(payload);
     let content;
     if (f.contentId) {
-      content = await api.getContent({ id: f.contentId });
+      content = await api.local.getContent({ id: f.contentId });
       dispatch("setContent", content);
+      dispatch("setFile", f);
     } else {
       content = { tree: createNewNode() };
-      const c = await api.newContent(content);
+      const c = await api.local.newContent(content);
       dispatch("setContent", Object.assign(content, { id: c }));
-      api.updateFile(Object.assign(f, { contentId: c }));
+      dispatch("setFile", f);
+      api.local.updateFile(Object.assign(f, { contentId: c }));
     }
   },
 

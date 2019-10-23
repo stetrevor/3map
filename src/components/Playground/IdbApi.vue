@@ -5,13 +5,13 @@
 </template>
 
 <script>
-import api from "@/api/local-storage";
+import api from "@/api";
 
 export default {
   name: "idb-api",
 
   created() {
-    window.idbapi = api;
+    window.idbapi = api.local;
   }
 };
 </script>

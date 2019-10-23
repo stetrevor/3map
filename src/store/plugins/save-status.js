@@ -9,7 +9,7 @@ import {
   switchAll
 } from "rxjs/operators";
 
-import api from "@/api/local-storage";
+import api from "@/api";
 import { CHANGE_SAVING_STATUS } from "../mutation-types";
 
 /**
@@ -44,7 +44,7 @@ export default function createSaveStatusPlugin() {
     const input$ = new Subject();
 
     const saveChanges = ({ state }) => {
-      return api.updateContent({
+      return api.local.updateContent({
         id: state.editor.contentId,
         tree: state.editor.treeData
       });
