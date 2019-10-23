@@ -1,7 +1,7 @@
 import shortid from "shortid";
 
 import cloud from "./firebase";
-import local from "./local-storage";
+import local from "./local";
 
 export default {
   cloud,
