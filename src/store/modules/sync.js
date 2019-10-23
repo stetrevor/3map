@@ -1,5 +1,6 @@
 import Vue from "vue";
 
+import api from "@/api";
 import * as mt from "../mutation-types";
 
 const state = {
@@ -75,8 +76,8 @@ const actions = {
     dispatch("addToLocalMapFileList", payload);
   },
 
-  addToLocalMapFileList() {
-    //TODO: add to local db
+  addToMapFileListLocal(_, payload) {
+    api.local.newMapFile(payload);
   }
 };
 
