@@ -80,7 +80,13 @@
         <img :src="resURL" />
       </div>
 
-      <button>Delete a map resource</button>
+      <div>
+        <h4>Delete a map resource</h4>
+        <input v-model="resRefPath" placeholder="resource refPath" />
+        <button @click="deleteRes">
+          Delete
+        </button>
+      </div>
       <button>Rename a map resource</button>
       <button>List map resources</button>
     </div>
@@ -155,6 +161,10 @@ export default {
       this.resURL = await api.cloud.getDownloadURL({
         refPath: this.resRefPath
       });
+    },
+
+    async deleteRes() {
+      await api.cloud.deleteFile({ refPath: this.resRefPath });
     }
   },
 

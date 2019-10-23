@@ -137,5 +137,14 @@ export default {
    */
   getDownloadURL({ refPath }) {
     return userRef.child(refPath).getDownloadURL();
+  },
+
+  /**
+   * Delete a file by refPath.
+   *
+   * @param {string} refPath The refPath of the file to be deleted
+   */
+  deleteFile({ refPath }) {
+    return userRef.child(refPath).delete();
   }
 };
