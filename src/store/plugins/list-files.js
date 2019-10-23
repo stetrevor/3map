@@ -14,7 +14,7 @@ export default function createListFilesPlugin() {
       if ("nextPageToken" in item) {
         store.commit(UPDATE_NEXT_PAGE_TOKEN, item);
       } else {
-        store.dispatch("addToMapFileListLocal", item);
+        store.dispatch("addToMapFileList", item);
       }
     });
 
