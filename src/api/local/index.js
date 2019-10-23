@@ -24,11 +24,12 @@ export default {
     return (await dbPromise).get("files", id);
   },
 
-  async updateFile({ id, ...updates }) {
+  async updateMapFile({ refPath, ...updates }) {
     const db = await dbPromise;
-    const file = await db.get("files", id);
+    const file = await db.get("files", refPath);
     Object.assign(file, updates);
-    return db.put("files", file);
+    await db.put("files", file);
+    return file;
   },
 
   async deleteFile({ id }) {
