@@ -27,7 +27,16 @@ const state = {
   treeData: null,
   treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 },
   savingStatus: "",
-  file: { refPath: "", name: "" } // refPath and name fields
+  mapFile: { refPath: shortid.generate(), filename: "" },
+  /**
+   * { refPath, downloadURL }
+   */
+  resources: []
+};
+
+const getters = {
+  resourceStatus: (state, _, rootState) => resource =>
+    Object.assign({}, resource, rootState.sync.status[resource.refPath])
 };
 
 const mutations = {
@@ -93,6 +102,13 @@ const mutations = {
 
   [mt.CHANGE_SAVING_STATUS](state, { status }) {
     state.savingStatus = status;
+  },
+
+  [mt.ADD_RESOURCE](state, { refPath, file }) {
+    state.resources.push({
+      refPath,
+      downloadURL: URL.createObjectURL(file)
+    });
   }
 };
 
@@ -170,11 +186,18 @@ const actions = {
         string: JSON.stringify(state.treeData)
       }
     ]);
+  },
+
+  addResource({ commit, dispatch, state }, { file }) {
+    const refPath = `${state.mapFile.refPath}/${file.name}`;
+    commit("ADD_RESOURCE", { refPath, file });
+    dispatch("uploadFiles", [{ refPath, file }]);
   }
 };
 
 export default {
   state,
+  getters,
   mutations,
   actions
 };
