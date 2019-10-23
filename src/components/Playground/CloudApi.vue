@@ -47,7 +47,7 @@
       <div>
         <h4>Rename Map "{{ renameFrom }}" to <input v-model="renameTo" /></h4>
         <button
-          @click="renameMapFile({ refPath: first.refPath, filename: renameTo })"
+          @click="renameMapFile({ refPath: last.refPath, filename: renameTo })"
         >
           Rename
         </button>
@@ -76,12 +76,12 @@ export default {
       return this.progress(this.mapFile.refPath);
     },
 
-    first() {
-      return this.mapFileList[0];
+    last() {
+      return this.mapFileList[this.mapFileList.length - 1];
     },
 
     renameFrom() {
-      return this.first ? this.first.filename : "";
+      return this.last ? this.last.filename : "";
     }
   },
 
