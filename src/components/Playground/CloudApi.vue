@@ -44,7 +44,15 @@
         </ul>
       </div>
 
-      <button>Rename a map</button>
+      <div>
+        <h4>Rename Map "{{ renameFrom }}" to <input v-model="renameTo" /></h4>
+        <button
+          @click="renameMapFile({ refPath: first.refPath, filename: renameTo })"
+        >
+          Rename
+        </button>
+      </div>
+
       <button>Upload a map resource</button>
       <button>Download a map resource</button>
       <button>Delete a map resource</button>
@@ -66,11 +74,24 @@ export default {
 
     uploadProgress() {
       return this.progress(this.mapFile.refPath);
+    },
+
+    first() {
+      return this.mapFileList[0];
+    },
+
+    renameFrom() {
+      return this.first ? this.first.filename : "";
     }
   },
 
   methods: {
-    ...mapActions(["new3MapFile", "uploadFiles", "getNextPageMapFiles"]),
+    ...mapActions([
+      "new3MapFile",
+      "uploadFiles",
+      "getNextPageMapFiles",
+      "renameMapFile"
+    ]),
 
     getFileId() {
       this.fileId = api.generateFileId();
@@ -115,7 +136,8 @@ export default {
       fileId: null,
       mapFile: { name: "", refPath: "" },
       mapContent: "",
-      allMapFiles: []
+      allMapFiles: [],
+      renameTo: ""
     };
   }
 };
