@@ -65,6 +65,13 @@ const actions = {
     /**
      * Sentinel action for sync status plugin.
      * So no action needs to be taken here.
+     * payload structure:
+     * { refPath, file }, or
+     * { refPath, string, metadata }
+     * @param {String} refPath Required. The full path where the upload destination is.
+     * @param {File, Blob, Uint8Array} file A file object like the one from <input> file.
+     * @param {String} string Raw string content to put in refPath.
+     * @param {Object} metadata Key value pairs containing metadata, like file name to be displayed.
      */
   },
 
