@@ -112,5 +112,21 @@ export default {
       map(nextPageToken => ({ nextPageToken }))
     );
     return concat(metadata$, token$);
+  },
+
+  /**
+   * Update map file metadata, mostly customMetadata.filename.
+   *
+   * @param {string} refPath The path relative to current user
+   * @param {object} metadata an object of custom metadata to update
+   */
+  async updateMetadata({ refPath, ...metadata }) {
+    const ref = userRef.child(refPath);
+    const data = await ref.updateMetadata({ customMetadata: metadata });
+    return {
+      refPath,
+      filename: data.customMetadata.filename,
+      updated: data.updated
+    };
   }
 };
