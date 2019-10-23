@@ -128,5 +128,14 @@ export default {
       filename: data.customMetadata.filename,
       updated: data.updated
     };
+  },
+
+  /**
+   * Return the downloadURL of a refPath.
+   *
+   * @param {string} refPath The refPath relative to current user
+   */
+  getDownloadURL({ refPath }) {
+    return userRef.child(refPath).getDownloadURL();
   }
 };
