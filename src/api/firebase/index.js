@@ -84,7 +84,7 @@ export default {
    * Return an Observable that emit each map file item like this:
    * {
    *   refPath: 'file/refpath',
-   *   metadata: { filename: 'filename' }, and other fields.
+   *   filename: 'pic.png', and other fields.
    * }
    * On complete, it emits an object { nextPageToke: 'nextpagetoken' }.
    *
@@ -102,7 +102,7 @@ export default {
       flatMap(prefixes => from(prefixes)),
       flatMap(prefix => getMetadata(prefix.child("index.json"))),
       map(({ fullPath, customMetadata, updated }) => ({
-        fullPath,
+        refPath: fullPath.replace("users/testuser", ""),
         filename: customMetadata.filename,
         updated
       }))
