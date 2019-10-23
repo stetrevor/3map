@@ -73,7 +73,7 @@ const actions = {
 
   addToMapFileList({ commit, dispatch }, payload) {
     commit(mt.ADD_TO_MAP_FILE_LIST, payload);
-    dispatch("addToLocalMapFileList", payload);
+    dispatch("addToMapFileListLocal", payload);
   },
 
   addToMapFileListLocal(_, payload) {
