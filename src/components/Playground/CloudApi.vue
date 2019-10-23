@@ -53,7 +53,24 @@
         </button>
       </div>
 
-      <button>Upload a map resource</button>
+      <div>
+        <h4>Add Resource</h4>
+        <input
+          type="file"
+          accept="image/*"
+          @change="addResource({ file: $event.target.files[0] })"
+        />
+        <div v-for="res in resources" :key="res.refPath">
+          <img
+            :src="resourceStatus(res).downloadURL"
+            width="400"
+            height="300"
+          />
+          <div>{{ resourceStatus(res).downloadURL }}</div>
+          <progress max="1" :value="resourceStatus(res).progress || 0" />
+        </div>
+      </div>
+
       <button>Download a map resource</button>
       <button>Delete a map resource</button>
       <button>Rename a map resource</button>
@@ -64,13 +81,17 @@
 
 <script>
 import api from "@/api";
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "cloud-api",
 
   computed: {
-    ...mapGetters(["progress", "pagination", "mapFileList"]),
+    ...mapState({
+      resources: state => state.editor.resources
+    }),
+
+    ...mapGetters(["progress", "pagination", "mapFileList", "resourceStatus"]),
 
     uploadProgress() {
       return this.progress(this.mapFile.refPath);
@@ -90,7 +111,8 @@ export default {
       "new3MapFile",
       "uploadFiles",
       "getNextPageMapFiles",
-      "renameMapFile"
+      "renameMapFile",
+      "addResource"
     ]),
 
     getFileId() {
