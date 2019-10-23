@@ -75,23 +75,12 @@ const actions = {
      */
   },
 
-  addToMapFileList({ commit, dispatch }, payload) {
+  addToMapFileList({ commit }, payload) {
     commit(mt.ADD_TO_MAP_FILE_LIST, payload);
-    dispatch("addToMapFileListLocal", payload);
-  },
-
-  addToMapFileListLocal(_, payload) {
-    api.local.newMapFile(payload);
   },
 
   async renameMapFile({ commit }, payload) {
-    let updated = await api.local.updateMapFile({
-      ...payload,
-      updated: new Date()
-    });
-    commit(mt.ADD_TO_MAP_FILE_LIST, updated);
-    updated = await api.cloud.updateMetadata(payload);
-    // TODO: add rename task to service worker
+    const updated = await api.cloud.updateMetadata(payload);
     commit(mt.ADD_TO_MAP_FILE_LIST, updated);
   }
 };
