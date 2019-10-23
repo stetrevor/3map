@@ -15,7 +15,11 @@ const state = {
   status: {},
   ongoingUploads: 0,
   pagination: { done: false, nextPageToken: "" },
-  mapFileList: []
+  /**
+   * key: refPath,
+   * value: { refPath, filename, updated }
+   */
+  mapFiles: {}
 };
 
 const getters = {
@@ -31,7 +35,7 @@ const getters = {
 
   mapFileList(state) {
     // sort it here
-    return state.mapFileList;
+    return Object.values(state.mapFiles).sort((a, b) => a.updated - b.updated);
   }
 };
 
@@ -51,8 +55,8 @@ const mutations = {
     state.pagination.nextPageToken = nextPageToken;
   },
 
-  [mt.ADD_TO_MAP_FILE_LIST](state, metadata) {
-    state.mapFileList.push(metadata);
+  [mt.ADD_TO_MAP_FILE_LIST](state, item) {
+    Vue.set(state.mapFiles, item.refPath, item);
   }
 };
 
