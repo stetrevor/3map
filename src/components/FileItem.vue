@@ -7,9 +7,9 @@
         class="file-item__edit"
         v-if="editing"
       />
-      <div class="file-item__name" v-else>{{ item.name }}</div>
+      <div class="file-item__name" v-else>{{ item.filename }}</div>
       <div class="file-item__last-modified">
-        {{ item.lastModified.toLocaleString() }}
+        {{ item.updated }}
       </div>
     </div>
 
