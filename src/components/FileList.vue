@@ -8,7 +8,7 @@
       <file-item
         :item="item"
         v-for="item in mapFileList"
-        :key="item.id"
+        :key="item.refPath"
         @file-open="edit(item)"
       />
     </div>
@@ -43,8 +43,11 @@ export default {
       });
     },
 
-    edit(file) {
-      this.$router.push({ name: "editor", params: { id: file.id } });
+    edit(map) {
+      this.$router.push({
+        name: "editor",
+        params: { id: map.id }
+      });
     }
   }
 };
