@@ -17,7 +17,7 @@ const options = {
           component: FileList
         },
         {
-          path: "file/:id/editor",
+          path: "file/:id/edit",
           name: "editor",
           component: () => import("@/components/TreeEditor.vue")
         }
