@@ -48,11 +48,7 @@ export default {
           observer.next({ refPath, progress });
         },
         error => observer.error(error),
-        async () => {
-          const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-          observer.next({ refPath, success: true, downloadURL });
-          observer.complete();
-        }
+        () => observer.complete()
       );
     });
   },
