@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import FileItem from "@/components/FileItem";
 
 export default {
@@ -25,15 +25,13 @@ export default {
   components: { FileItem },
 
   beforeRouteEnter(to, from, next) {
-    next(vm => vm.getAllFiles());
+    next(vm => vm.getNextPageMapFiles({ nextPageToken: "" }));
   },
 
-  computed: mapState({
-    files: state => state.files.fileList
-  }),
+  computed: mapGetters(["mapFileList"]),
 
   methods: {
-    ...mapActions(["getAllFiles", "editNewFile"]),
+    ...mapActions(["getNextPageMapFiles", "editNewFile"]),
 
     editNewFile() {
       this.$router.push({
