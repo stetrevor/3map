@@ -7,11 +7,17 @@
       </template>
     </div>
     <router-view />
+
+    <base-toast />
   </div>
 </template>
 
 <script>
+import BaseToast from "@/components/BaseToast";
+
 export default {
+  components: { BaseToast },
+
   data() {
     return {
       NODE_ENV: process.env.NODE_ENV
