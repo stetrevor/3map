@@ -7,11 +7,14 @@
     <div class="file-list__list">
       <file-item
         :item="item"
-        v-for="item in files"
+        v-for="item in mapFileList"
         :key="item.id"
         @file-open="edit(item)"
       />
     </div>
+    <button v-if="!pagination.done" @click="getNextPageMapFiles(pagination)">
+      Load More
+    </button>
   </div>
 </template>
 
@@ -28,7 +31,7 @@ export default {
     next(vm => vm.getNextPageMapFiles({ nextPageToken: "" }));
   },
 
-  computed: mapGetters(["mapFileList"]),
+  computed: mapGetters(["mapFileList", "pagination"]),
 
   methods: {
     ...mapActions(["getNextPageMapFiles", "editNewFile"]),
