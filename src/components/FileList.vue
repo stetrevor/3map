@@ -8,7 +8,7 @@
       <file-item
         :item="item"
         v-for="item in mapFileList"
-        :key="item.refPath"
+        :key="item.id"
         @file-open="edit(item)"
       />
     </div>
