@@ -106,6 +106,11 @@ export default {
     next();
   },
 
+  beforeRouteLeave(to, from, next) {
+    this.uploadMapFile(from.params);
+    next();
+  },
+
   computed: {
     ...mapState({
       tree: state => state.editor.treeData,
@@ -139,7 +144,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["moveNode", "addChild", "getMapContent"]),
+    ...mapActions(["moveNode", "addChild", "getMapContent", "uploadMapFile"]),
 
     setup() {
       this.getMapContent(this.$route.params);
