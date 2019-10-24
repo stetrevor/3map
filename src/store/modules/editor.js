@@ -149,10 +149,19 @@ const actions = {
     commit(mt.UPDATE_TEXT, payload);
   },
 
-  getMapContent({ commit }, { id }) {
+  async getMapContent({ commit }, { id }) {
     if (id === "new") {
       const content = { tree: createNewNode() };
       commit(mt.SET_CONTENT, content);
+      commit(mt.UPDATE_LAYOUT);
+    } else {
+      const url = await api.cloud.getDownloadURL({
+        refPath: id + "/index.json"
+      });
+      const resp = await fetch(url);
+      const tree = await resp.json();
+      console.log("got tree", tree);
+      commit(mt.SET_CONTENT, { tree });
       commit(mt.UPDATE_LAYOUT);
     }
   },
