@@ -1,5 +1,7 @@
 <template>
   <div class="file-item" @click="editing ? '' : $emit('file-open')">
+    <progress max="1" :value="uploadProgress.progress" v-if="uploadProgress" />
+
     <div class="file-item__content">
       <input
         type="text"
@@ -29,13 +31,21 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   props: {
     item: {
       type: Object,
       required: true
+    }
+  },
+
+  computed: {
+    ...mapGetters(["progress"]),
+
+    uploadProgress() {
+      return this.progress(this.item.refPath);
     }
   },
 
