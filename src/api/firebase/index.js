@@ -101,11 +101,11 @@ export default {
       pluck("prefixes"),
       flatMap(prefixes => from(prefixes)),
       flatMap(prefix => getMetadata(prefix.child("index.json"))),
-      map(({ fullPath, customMetadata, updated }) => ({
-        refPath: fullPath.replace("users/testuser", ""),
-        filename: customMetadata.filename,
-        updated
-      }))
+      map(({ fullPath, customMetadata, updated }) => {
+        const refPath = fullPath.replace("users/testuser/", "");
+        const id = refPath.replace("/index.json", "");
+        return { id, refPath, filename: customMetadata.filename, updated };
+      })
     );
     const token$ = page$.pipe(
       pluck("nextPageToken"),
