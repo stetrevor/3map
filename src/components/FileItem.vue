@@ -40,11 +40,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(["updateFile", "deleteFile"]),
+    ...mapActions(["renameMapFile", "deleteFile"]),
 
     async rename() {
       if (!this.editing) {
-        await this.updateFile({ id: this.item.id, name: this.name });
+        await this.renameMapFile({
+          refPath: this.item.refPath,
+          filename: this.name
+        });
       }
     },
 
@@ -56,7 +59,7 @@ export default {
   data() {
     return {
       editing: false,
-      name: this.item.name
+      name: this.item.filename
     };
   }
 };
