@@ -44,6 +44,10 @@ const mutations = {
     Vue.set(state.status, status.refPath, status);
   },
 
+  [mt.DELETE_UPLOAD_STATUS](state, { refPath }) {
+    Vue.delete(state.status, refPath);
+  },
+
   [mt.UPDATE_UPLOADS_IN_PROGRESS_COUNT](state, { count }) {
     state.ongoingUploads = count;
   },
@@ -98,6 +102,13 @@ const actions = {
   async deleteMapFile({ commit }, payload) {
     await api.cloud.deleteFile(payload);
     commit(mt.DELETE_FROM_MAP_FILE_LIST, payload);
+  },
+
+  updateUploadStatus({ commit }, payload) {
+    commit(mt.UPDATE_UPLOAD_STATUS, payload);
+    if (payload.progress === 1) {
+      Vue.nextTick(() => commit(mt.DELETE_UPLOAD_STATUS, payload));
+    }
   }
 };
 
