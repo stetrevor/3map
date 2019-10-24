@@ -33,11 +33,13 @@ export default {
   }),
 
   methods: {
-    ...mapActions(["getAllFiles", "newFile"]),
+    ...mapActions(["getAllFiles", "editNewFile"]),
 
-    async editNewFile() {
-      const file = await this.newFile();
-      this.$router.push({ name: "editor", params: { id: file } });
+    editNewFile() {
+      this.$router.push({
+        name: "editor",
+        params: { id: "new" }
+      });
     },
 
     edit(file) {
