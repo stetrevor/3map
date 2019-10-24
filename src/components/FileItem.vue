@@ -40,7 +40,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["renameMapFile", "deleteFile"]),
+    ...mapActions(["renameMapFile", "deleteFile", "showToast"]),
 
     async rename() {
       if (!this.editing) {
@@ -48,6 +48,7 @@ export default {
           refPath: this.item.refPath,
           filename: this.name
         });
+        this.showToast("File renamed.");
       }
     },
 
