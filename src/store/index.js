@@ -4,6 +4,7 @@ import Vuex from "vuex";
 import files from "./modules/files";
 import editor from "./modules/editor";
 import sync from "./modules/sync";
+import toast from "./modules/toast";
 import createListFilesPlugin from "./plugins/list-files";
 
 Vue.use(Vuex);
@@ -12,7 +13,8 @@ const store = new Vuex.Store({
   modules: {
     files,
     editor,
-    sync
+    sync,
+    toast
   },
 
   plugins: [createListFilesPlugin()],
