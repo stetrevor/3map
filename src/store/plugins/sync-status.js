@@ -28,7 +28,7 @@ export default function createSyncStatusPlugin() {
       store.commit(UPDATE_UPLOADS_IN_PROGRESS_COUNT, { count: ongoing });
     });
     tasks$.subscribe(state => {
-      store.commit(UPDATE_UPLOAD_STATUS, state);
+      store.dispatch("updateUploadStatus", state);
     });
 
     store.subscribeAction(action => {
