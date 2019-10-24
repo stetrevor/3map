@@ -90,8 +90,7 @@ const mutations = {
     state.treeBoundingBox = boundingBox;
   },
 
-  [mt.SET_CONTENT](state, { id, tree }) {
-    state.contentId = id;
+  [mt.SET_CONTENT](state, { tree }) {
     state.treeData = tree;
   },
 
@@ -150,29 +149,16 @@ const actions = {
     commit(mt.UPDATE_TEXT, payload);
   },
 
-  setContent({ commit }, payload) {
-    commit(mt.SET_CONTENT, payload);
-    commit(mt.UPDATE_LAYOUT);
+  getMapContent({ commit }, { id }) {
+    if (id === "new") {
+      const content = { tree: createNewNode() };
+      commit(mt.SET_CONTENT, content);
+      commit(mt.UPDATE_LAYOUT);
+    }
   },
 
   setFile({ commit }, payload) {
     commit(mt.SET_FILE, payload);
-  },
-
-  async getMap({ dispatch }, payload) {
-    const f = await api.local.getFile(payload);
-    let content;
-    if (f.contentId) {
-      content = await api.local.getContent({ id: f.contentId });
-      dispatch("setContent", content);
-      dispatch("setFile", f);
-    } else {
-      content = { tree: createNewNode() };
-      const c = await api.local.newContent(content);
-      dispatch("setContent", Object.assign(content, { id: c }));
-      dispatch("setFile", f);
-      api.local.updateFile(Object.assign(f, { contentId: c }));
-    }
   },
 
   upload3MapFile({ dispatch, state }) {
