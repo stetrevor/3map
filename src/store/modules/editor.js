@@ -157,27 +157,14 @@ const actions = {
     }
   },
 
-  uploadMapFile({ state }, { id }) {
+  uploadMapFile({ state, dispatch }, { id }) {
     if (id === "new") {
       const refPath = shortid.generate() + "/index.json";
       const filename = "Untitled";
       const metadata = { customMetadata: { filename } };
       const string = JSON.stringify(state.treeData);
-      api.cloud.uploadFile({ refPath, metadata, string }).subscribe();
+      dispatch("uploadFiles", [{ refPath, metadata, string }]);
     }
-  },
-
-  upload3MapFile({ dispatch, state }) {
-    /**
-     * Use uploadFiles to handle upload action.
-     */
-    dispatch("uploadFiles", [
-      {
-        refPath: state.file.refPath,
-        metadata: { customMetadata: { filename: state.file.name } },
-        string: JSON.stringify(state.treeData)
-      }
-    ]);
   },
 
   addResource({ commit, dispatch, state }, { file }) {
