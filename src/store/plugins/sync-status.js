@@ -19,7 +19,7 @@ export default function createSyncStatusPlugin() {
       )
     );
     const completed$ = tasks$.pipe(
-      filter(state => state.success),
+      filter(state => state.progress === 1),
       map(() => --ongoing)
     );
     const ongoing$ = merge(inProgress$, completed$);
