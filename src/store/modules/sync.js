@@ -57,6 +57,10 @@ const mutations = {
 
   [mt.ADD_TO_MAP_FILE_LIST](state, item) {
     Vue.set(state.mapFiles, item.refPath, item);
+  },
+
+  [mt.DELETE_FROM_MAP_FILE_LIST](state, { refPath }) {
+    Vue.delete(state.mapFiles, refPath);
   }
 };
 
@@ -89,6 +93,11 @@ const actions = {
   async renameMapFile({ commit }, payload) {
     const updated = await api.cloud.updateMetadata(payload);
     commit(mt.ADD_TO_MAP_FILE_LIST, updated);
+  },
+
+  async deleteMapFile({ commit }, payload) {
+    await api.cloud.deleteFile(payload);
+    commit(mt.DELETE_FROM_MAP_FILE_LIST, payload);
   }
 };
 
