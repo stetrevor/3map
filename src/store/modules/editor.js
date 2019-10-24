@@ -157,8 +157,14 @@ const actions = {
     }
   },
 
-  setFile({ commit }, payload) {
-    commit(mt.SET_FILE, payload);
+  uploadMapFile({ state }, { id }) {
+    if (id === "new") {
+      const refPath = shortid.generate() + "/index.json";
+      const filename = "Untitled";
+      const metadata = { customMetadata: { filename } };
+      const string = JSON.stringify(state.treeData);
+      api.cloud.uploadFile({ refPath, metadata, string }).subscribe();
+    }
   },
 
   upload3MapFile({ dispatch, state }) {
