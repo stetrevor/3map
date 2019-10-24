@@ -167,17 +167,11 @@ const actions = {
   },
 
   uploadMapFile({ state, dispatch }, { id, filename }) {
-    if (id === "new") {
-      const refPath = shortid.generate() + "/index.json";
-      const metadata = { customMetadata: { filename } };
-      const string = JSON.stringify(state.treeData);
-      dispatch("uploadFiles", [{ refPath, metadata, string }]);
-    } else {
-      const refPath = id + "/index.json";
-      const string = JSON.stringify(state.treeData);
-      const metadata = { customMetadata: { filename } };
-      dispatch("uploadFiles", [{ refPath, metadata, string }]);
-    }
+    const fileId = id === "new" ? shortid.generate() : id;
+    const refPath = fileId + "/index.json";
+    const metadata = { customMetadata: { filename } };
+    const string = JSON.stringify(state.treeData);
+    dispatch("uploadFiles", [{ refPath, metadata, string }]);
   },
 
   addResource({ commit, dispatch, state }, { file }) {
