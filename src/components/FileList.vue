@@ -39,14 +39,14 @@ export default {
     editNewFile() {
       this.$router.push({
         name: "editor",
-        params: { id: "new" }
+        params: { id: "new", filename: "Untitled" }
       });
     },
 
-    edit(map) {
+    edit({ id, filename }) {
       this.$router.push({
         name: "editor",
-        params: { id: map.id }
+        params: { id, filename }
       });
     }
   }
