@@ -139,10 +139,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(["moveNode", "addChild", "getMap"]),
+    ...mapActions(["moveNode", "addChild", "getMapContent"]),
 
-    async setup() {
-      await this.getMap({ id: parseInt(this.$route.params.id) });
+    setup() {
+      this.getMapContent(this.$route.params);
       this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
       this.selectTool = new SelectTool();
       this.selectTool.select(this.tree);
