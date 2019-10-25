@@ -1,14 +1,10 @@
 import { openDB } from "idb";
 import shortid from "shortid";
 
-const dbPromise = openDB("3map", 1, {
+const dbPromise = openDB("3map-app", 1, {
   upgrade(db) {
-    db.createObjectStore("files", {
-      keyPath: "refPath"
-    });
-
-    db.createObjectStore("resources", {
-      keyPath: "refPath"
+    db.createObjectStore("staging", {
+      keyPath: "id"
     });
   }
 });
@@ -85,5 +81,14 @@ export default {
    */
   async removeMapResource({ refPath }) {
     (await dbPromise).delete("resources", refPath);
+  },
+
+  /**
+   * Save the current state of map locally.
+   * This includes map file id and filename for uploading convenience.
+   * It's used as a staging area for editing map files.
+   */
+  async stageMap(item) {
+    return (await dbPromise).put("staging", item);
   }
 };
