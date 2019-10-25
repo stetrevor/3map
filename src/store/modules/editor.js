@@ -105,6 +105,10 @@ const mutations = {
 
   [mt.CHANGE_SAVING_STATUS](state, { status }) {
     state.savingStatus = status;
+  },
+
+  [mt.RESET_SAVE_STATUS](state) {
+    state.savingStatus = "";
   }
 };
 
@@ -166,6 +170,7 @@ const actions = {
       }
     }
 
+    commit(mt.RESET_SAVE_STATUS);
     commit(mt.SET_MAP_FILE, { id, filename });
     commit(mt.SET_CONTENT, content);
     commit(mt.UPDATE_LAYOUT);
