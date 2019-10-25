@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import files from "./modules/files";
 import editor from "./modules/editor";
 import sync from "./modules/sync";
 import toast from "./modules/toast";
@@ -13,7 +12,6 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules: {
-    files,
     editor,
     sync,
     toast
