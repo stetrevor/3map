@@ -96,13 +96,6 @@ const mutations = {
 
   [mt.CHANGE_SAVING_STATUS](state, { status }) {
     state.savingStatus = status;
-  },
-
-  [mt.ADD_RESOURCE](state, { refPath, file }) {
-    state.resources.push({
-      refPath,
-      downloadURL: URL.createObjectURL(file)
-    });
   }
 };
 
