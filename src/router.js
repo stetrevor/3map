@@ -44,18 +44,6 @@ if (process.env.NODE_ENV === "development") {
       {
         path: "layout-algorithm",
         component: () => import("@/components/Playground/LayoutAlgorithm")
-      },
-      {
-        path: "idb-api",
-        component: () => import("@/components/Playground/IdbApi")
-      },
-      {
-        path: "firebase-cloud-storage",
-        component: () => import("@/components/Playground/FirebaseCloud")
-      },
-      {
-        path: "cloud-api",
-        component: () => import("@/components/Playground/CloudApi")
       }
     ]
   });
