@@ -43,12 +43,7 @@ export default function createSaveStatusPlugin() {
   return store => {
     const input$ = new Subject();
 
-    const saveChanges = ({ state }) => {
-      return api.local.updateContent({
-        id: state.editor.contentId,
-        tree: state.editor.treeData
-      });
-    };
+    const saveChanges = item => api.local.stageMap(item);
 
     const indicator$ = getSaveIndicator(input$, saveChanges, "saving", "saved");
     indicator$.subscribe(status => {
@@ -69,7 +64,9 @@ export default function createSaveStatusPlugin() {
         "updateText"
       ];
       if (saveOperations.includes(action.type)) {
-        input$.next({ mt: action.type, state });
+        const { id, filename } = state.editor.mapFile;
+        const content = { tree: state.editor.treeData };
+        input$.next({ id, filename, content });
       }
     });
   };
