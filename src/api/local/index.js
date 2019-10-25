@@ -90,5 +90,12 @@ export default {
    */
   async stageMap(item) {
     return (await dbPromise).put("staging", item);
+  },
+
+  /**
+   * Return a staged map by id.
+   */
+  async getStagedMap({ id }) {
+    return (await dbPromise).get("staging", id);
   }
 };
