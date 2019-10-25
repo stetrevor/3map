@@ -1,7 +1,7 @@
 <template>
   <div class="tree-editor">
     <div class="tree-editor__saving-status">{{ savingStatus }}</div>
-    <div class="tree-editor__content" :style="contentBB" v-if="ready">
+    <div class="tree-editor__content" :style="contentBB">
       <svg
         class="tree-editor__connections"
         xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +22,6 @@
         "
       />
     </div>
-    <div v-else>Loading...</div>
   </div>
 </template>
 
@@ -96,28 +95,25 @@ class SelectTool {
 
 export default {
   name: "tree-editor",
+
   components: { NodeItem, ConnectionItem },
 
-  beforeRouteEnter(to, from, next) {
-    next(vm => vm.setup());
-  },
-
-  beforeRouteUpdate(to, from, next) {
-    this.setup();
-    next();
-  },
-
-  beforeRouteLeave(to, from, next) {
-    this.uploadMapFile(from.params);
-    next();
+  props: {
+    tree: {
+      type: Object,
+      required: true
+    },
+    boundingBox: {
+      type: Object,
+      required: true
+    }
   },
 
   computed: {
     ...mapState({
-      tree: state => state.editor.treeData,
-      treeBB: state => state.editor.treeBoundingBox,
       savingStatus: state => {
         const status = state.editor.savingStatus;
+
         if (typeof status === "number") {
           return `Last updated ${new Date(status).toLocaleString()}`;
         } else {
@@ -127,7 +123,7 @@ export default {
     }),
 
     bb() {
-      const { left, right, top, bottom } = this.treeBB;
+      const { left, right, top, bottom } = this.boundingBox;
       return {
         width: `${right - left}px`,
         height: `${bottom - top}px`
@@ -135,7 +131,7 @@ export default {
     },
 
     contentBB() {
-      const { left, right, top, bottom } = this.treeBB;
+      const { left, right, top, bottom } = this.boundingBox;
       return {
         width: `${right - left}px`,
         height: `${bottom - top}px`,
@@ -145,23 +141,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(["moveNode", "addChild", "getMapContent", "uploadMapFile"]),
+    ...mapActions(["moveNode", "addChild"])
+  },
 
-    async setup() {
-      this.ready = false;
-      await this.getMapContent(this.$route.params);
-      this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
-      this.selectTool = new SelectTool();
-      this.selectTool.select(this.tree);
-      this.ready = true;
-    }
+  created() {
+    this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
+    this.selectTool = new SelectTool();
+    this.selectTool.select(this.tree);
   },
 
   data() {
     return {
       moveNodeTool: null,
-      selectTool: null,
-      ready: false
+      selectTool: null
     };
   }
 };
