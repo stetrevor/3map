@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import NodeItem from "@/components/NodeItem";
 import ConnectionItem from "@/components/ConnectionItem";
 
@@ -127,9 +127,7 @@ export default {
     }
   },
 
-  methods: {
-    ...mapActions(["moveNode", "addChild"])
-  },
+  methods: mapActions(["moveNode", "addChild"]),
 
   created() {
     this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
