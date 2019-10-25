@@ -87,6 +87,10 @@ export default {
    * Save the current state of map locally.
    * This includes map file id and filename for uploading convenience.
    * It's used as a staging area for editing map files.
+   *
+   * item structure:
+   * { id, filename, content: { tree: Object } }
+   *
    */
   async stageMap(item) {
     return (await dbPromise).put("staging", item);
