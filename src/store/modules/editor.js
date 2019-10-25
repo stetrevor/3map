@@ -1,8 +1,11 @@
 import { Layout, BoundingBox } from "non-layered-tidy-tree-layout";
 import shortid from "shortid";
+import hasher from "node-object-hash";
 
 import api from "@/api";
 import * as mt from "../mutation-types";
+
+const Hasher = hasher();
 
 const createNewNode = () => {
   const id = shortid.generate();
@@ -30,7 +33,8 @@ const state = {
   /**
    * { refPath, downloadURL }
    */
-  resources: []
+  resources: [],
+  initialContentHash: ""
 };
 
 const getters = {
@@ -109,6 +113,10 @@ const mutations = {
 
   [mt.RESET_SAVE_STATUS](state) {
     state.saveStatus = "";
+  },
+
+  [mt.SET_INITIAL_CONTENT_HASH](state, hash) {
+    state.initialContentHash = hash;
   }
 };
 
@@ -170,6 +178,7 @@ const actions = {
       }
     }
 
+    commit(mt.SET_INITIAL_CONTENT_HASH, Hasher.hash(content));
     commit(mt.RESET_SAVE_STATUS);
     commit(mt.SET_MAP_FILE, { id, filename });
     commit(mt.SET_CONTENT, content);
@@ -179,6 +188,13 @@ const actions = {
   },
 
   uploadMapFile({ state, dispatch }, { id, filename }) {
+    // Check to see if there's any change.
+    if (
+      state.saveStatus === "" ||
+      Hasher.hash({ tree: state.treeData }) === state.initialContentHash
+    )
+      return;
+
     const fileId = id === "new" ? shortid.generate() : id;
     const refPath = fileId + "/index.json";
     const metadata = { customMetadata: { filename } };
