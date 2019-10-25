@@ -27,7 +27,7 @@ const state = {
   treeData: null,
   treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 },
   savingStatus: "",
-  mapFile: { refPath: shortid.generate(), filename: "" },
+  mapFile: { id: "", filename: "" },
   /**
    * { refPath, downloadURL }
    */
@@ -94,9 +94,9 @@ const mutations = {
     state.treeData = tree;
   },
 
-  [mt.SET_FILE](state, { refPath, name }) {
-    state.file.refPath = refPath;
-    state.file.name = name;
+  [mt.SET_MAP_FILE](state, { id, filename }) {
+    state.mapFile.id = id;
+    state.mapFile.filename = filename;
   },
 
   [mt.CHANGE_SAVING_STATUS](state, { status }) {
@@ -149,9 +149,11 @@ const actions = {
     commit(mt.UPDATE_TEXT, payload);
   },
 
-  async getMapContent({ commit }, { id }) {
+  async getMapContent({ commit }, { id, filename }) {
     if (id === "new") {
       const content = { tree: createNewNode() };
+      await api.local.stageMap({ id, filename, content });
+      commit(mt.SET_MAP_FILE, { id, filename });
       commit(mt.SET_CONTENT, content);
       commit(mt.UPDATE_LAYOUT);
     } else {
@@ -160,7 +162,9 @@ const actions = {
       });
       const resp = await fetch(url);
       const tree = await resp.json();
-      console.log("got tree", tree);
+      const content = { tree };
+      await api.local.stageMap({ id, filename, content });
+      commit(mt.SET_MAP_FILE, { id, filename });
       commit(mt.SET_CONTENT, { tree });
       commit(mt.UPDATE_LAYOUT);
     }
