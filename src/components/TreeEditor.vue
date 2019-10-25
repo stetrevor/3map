@@ -1,6 +1,5 @@
 <template>
   <div class="tree-editor">
-    <div class="tree-editor__saving-status">{{ savingStatus }}</div>
     <div class="tree-editor__content" :style="contentBB">
       <svg
         class="tree-editor__connections"
@@ -110,18 +109,6 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      savingStatus: state => {
-        const status = state.editor.savingStatus;
-
-        if (typeof status === "number") {
-          return `Last updated ${new Date(status).toLocaleString()}`;
-        } else {
-          return status;
-        }
-      }
-    }),
-
     bb() {
       const { left, right, top, bottom } = this.boundingBox;
       return {
@@ -164,12 +151,6 @@ export default {
   position: relative;
   margin-top: 48px;
   padding-top: 48px;
-
-  &__saving-status {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-  }
 
   &__content {
     position: relative;

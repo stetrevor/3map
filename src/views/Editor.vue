@@ -1,5 +1,7 @@
 <template>
   <div class="editor">
+    <div class="editor__saving-status">{{ savingStatus }}</div>
+
     <tree-editor :tree="tree" :bounding-box="boundingBox" v-if="ready" />
     <div v-else>Loading...</div>
   </div>
@@ -7,14 +9,28 @@
 
 <script>
 import TreeEditor from "@/components/TreeEditor";
-import { mapGetters, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "editor",
 
   components: { TreeEditor },
 
-  computed: mapGetters(["tree", "boundingBox"]),
+  computed: {
+    ...mapState({
+      savingStatus: state => {
+        const status = state.editor.savingStatus;
+
+        if (typeof status === "number") {
+          return `Last updated ${new Date(status).toLocaleString()}`;
+        } else {
+          return status;
+        }
+      }
+    }),
+
+    ...mapGetters(["tree", "boundingBox"])
+  },
 
   methods: {
     ...mapActions(["getMapContent", "uploadMapFile"]),
