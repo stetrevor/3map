@@ -148,6 +148,7 @@ export default {
     ...mapActions(["moveNode", "addChild", "getMapContent", "uploadMapFile"]),
 
     async setup() {
+      this.ready = false;
       await this.getMapContent(this.$route.params);
       this.moveNodeTool = new MoveNodeTool(this.tree, this.moveNode);
       this.selectTool = new SelectTool();
