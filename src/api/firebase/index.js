@@ -2,8 +2,6 @@ import "firebase/storage";
 import { Observable, from, concat } from "rxjs";
 import { pluck, flatMap, map } from "rxjs/operators";
 
-import shortid from "shortid";
-
 import initFirebase from "./config";
 
 const firebase = initFirebase();
