@@ -153,6 +153,7 @@ const actions = {
     let content;
     if (id === "new") {
       content = { tree: createNewNode() };
+      id = shortid.generate();
     } else {
       // See if a staging copy is found.
       const staging = await api.local.getStagedMap({ id });
