@@ -54,29 +54,6 @@ export default {
   },
 
   /**
-   * Return refPaths used by a 3map file.
-   * This includes a refPath for 3map file, if not provided,
-   * and a resourceRefPath function that takes the resource name
-   * and generate a refPath for the resource file.
-   *
-   * @param {string} refPath The refPath of a 3map file
-   */
-  generateRefPaths(refPath = null) {
-    let dir;
-    let mapRefPath;
-    if (refPath) {
-      dir = refPath.replace("index.json", "");
-      mapRefPath = refPath;
-    } else {
-      dir = `users/testuser/${shortid.generate()}/`;
-      mapRefPath = dir + "index.json";
-    }
-    const resourceRefPath = name => dir + name;
-
-    return { mapRefPath, resourceRefPath };
-  },
-
-  /**
    * Return an Observable that emit each map file item like this:
    * {
    *   refPath: 'file/refpath',
