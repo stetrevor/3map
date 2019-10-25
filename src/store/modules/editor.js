@@ -154,12 +154,18 @@ const actions = {
     if (id === "new") {
       content = { tree: createNewNode() };
     } else {
-      const url = await api.cloud.getDownloadURL({
-        refPath: id + "/index.json"
-      });
-      const resp = await fetch(url);
-      const tree = await resp.json();
-      content = { tree };
+      // See if a staging copy is found.
+      const staging = await api.local.getStagedMap({ id });
+      if (staging) {
+        content = staging.content;
+      } else {
+        const url = await api.cloud.getDownloadURL({
+          refPath: id + "/index.json"
+        });
+        const resp = await fetch(url);
+        const tree = await resp.json();
+        content = { tree };
+      }
     }
 
     commit(mt.SET_MAP_FILE, { id, filename });
