@@ -34,11 +34,6 @@ const state = {
   resources: []
 };
 
-const getters = {
-  resourceStatus: (state, _, rootState) => resource =>
-    Object.assign({}, resource, rootState.sync.status[resource.refPath])
-};
-
 const mutations = {
   [mt.ADD_CHILD](state, { parent }) {
     const node = createNewNode();
@@ -182,18 +177,11 @@ const actions = {
     const metadata = { customMetadata: { filename } };
     const string = JSON.stringify(state.treeData);
     dispatch("uploadFiles", [{ refPath, metadata, string }]);
-  },
-
-  addResource({ commit, dispatch, state }, { file }) {
-    const refPath = `${state.mapFile.refPath}/${file.name}`;
-    commit("ADD_RESOURCE", { refPath, file });
-    dispatch("uploadFiles", [{ refPath, file }]);
   }
 };
 
 export default {
   state,
-  getters,
   mutations,
   actions
 };
