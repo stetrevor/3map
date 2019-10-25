@@ -7,6 +7,7 @@ import sync from "./modules/sync";
 import toast from "./modules/toast";
 import createListFilesPlugin from "./plugins/list-files";
 import createSyncStatusPlugin from "./plugins/sync-status";
+import createSaveStatusPlugin from "./plugins/save-status";
 
 Vue.use(Vuex);
 
@@ -18,7 +19,11 @@ const store = new Vuex.Store({
     toast
   },
 
-  plugins: [createListFilesPlugin(), createSyncStatusPlugin()],
+  plugins: [
+    createListFilesPlugin(),
+    createSyncStatusPlugin(),
+    createSaveStatusPlugin()
+  ],
 
   strict: process.env.NODE_ENV !== "production"
 });
