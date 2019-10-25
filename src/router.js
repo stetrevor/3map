@@ -19,7 +19,7 @@ const options = {
         {
           path: "file/:id/:filename/edit",
           name: "editor",
-          component: () => import("@/components/TreeEditor.vue")
+          component: () => import("@/views/Editor.vue")
         }
       ],
       redirect: "/files"
