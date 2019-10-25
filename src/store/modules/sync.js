@@ -108,6 +108,13 @@ const actions = {
     commit(mt.UPDATE_UPLOAD_STATUS, payload);
     if (payload.progress === 1) {
       Vue.nextTick(() => commit(mt.DELETE_UPLOAD_STATUS, payload));
+      Vue.nextTick(() => {
+        if (payload.refPath.endsWith("/index.json")) {
+          api.local.deleteStagedMap({
+            id: payload.refPath.replace("/index.json", "")
+          });
+        }
+      });
     }
   }
 };

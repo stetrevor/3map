@@ -41,5 +41,12 @@ export default {
    */
   async getStagedMap({ id }) {
     return (await dbPromise).get("staging", id);
+  },
+
+  /**
+   * Delete a staged map by id.
+   */
+  async deleteStagedMap({ id }) {
+    return (await dbPromise).delete("staging", id);
   }
 };

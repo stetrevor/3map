@@ -2,10 +2,7 @@ import { Subject, merge } from "rxjs";
 import { flatMap, map, filter, groupBy, switchMap } from "rxjs/operators";
 
 import api from "@/api";
-import {
-  UPDATE_UPLOADS_IN_PROGRESS_COUNT,
-  UPDATE_UPLOAD_STATUS
-} from "../mutation-types";
+import { UPDATE_UPLOADS_IN_PROGRESS_COUNT } from "../mutation-types";
 
 export default function createSyncStatusPlugin() {
   return store => {

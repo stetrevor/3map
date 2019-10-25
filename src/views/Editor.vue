@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <div class="editor__saving-status">{{ savingStatus }}</div>
+    <div class="editor__save-status">{{ saveStatus }}</div>
 
     <tree-editor :tree="tree" :bounding-box="boundingBox" v-if="ready" />
     <div v-else>Loading...</div>
@@ -18,8 +18,8 @@ export default {
 
   computed: {
     ...mapState({
-      savingStatus: state => {
-        const status = state.editor.savingStatus;
+      saveStatus: state => {
+        const status = state.editor.saveStatus;
 
         if (typeof status === "number") {
           return `Last updated ${new Date(status).toLocaleString()}`;

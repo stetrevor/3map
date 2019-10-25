@@ -10,7 +10,7 @@ import {
 } from "rxjs/operators";
 
 import api from "@/api";
-import { CHANGE_SAVING_STATUS } from "../mutation-types";
+import { CHANGE_SAVE_STATUS } from "../mutation-types";
 
 /**
  * Return an Observable, with status message as the output.
@@ -47,7 +47,7 @@ export default function createSaveStatusPlugin() {
 
     const indicator$ = getSaveIndicator(input$, saveChanges, "saving", "saved");
     indicator$.subscribe(status => {
-      store.commit(CHANGE_SAVING_STATUS, { status });
+      store.commit(CHANGE_SAVE_STATUS, { status });
     });
 
     store.subscribeAction((action, state) => {
