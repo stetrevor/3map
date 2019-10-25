@@ -150,24 +150,23 @@ const actions = {
   },
 
   async getMapContent({ commit }, { id, filename }) {
+    let content;
     if (id === "new") {
-      const content = { tree: createNewNode() };
-      await api.local.stageMap({ id, filename, content });
-      commit(mt.SET_MAP_FILE, { id, filename });
-      commit(mt.SET_CONTENT, content);
-      commit(mt.UPDATE_LAYOUT);
+      content = { tree: createNewNode() };
     } else {
       const url = await api.cloud.getDownloadURL({
         refPath: id + "/index.json"
       });
       const resp = await fetch(url);
       const tree = await resp.json();
-      const content = { tree };
-      await api.local.stageMap({ id, filename, content });
-      commit(mt.SET_MAP_FILE, { id, filename });
-      commit(mt.SET_CONTENT, { tree });
-      commit(mt.UPDATE_LAYOUT);
+      content = { tree };
     }
+
+    commit(mt.SET_MAP_FILE, { id, filename });
+    commit(mt.SET_CONTENT, content);
+    commit(mt.UPDATE_LAYOUT);
+
+    await api.local.stageMap({ id, filename, content });
   },
 
   uploadMapFile({ state, dispatch }, { id, filename }) {
