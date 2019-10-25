@@ -25,7 +25,7 @@ const layout = new Layout(
 const state = {
   treeData: null,
   treeBoundingBox: { left: 0, right: 0, top: 0, bottom: 0 },
-  savingStatus: "",
+  saveStatus: "",
   mapFile: { id: "", filename: "" },
   /**
    * { refPath, downloadURL }
@@ -103,12 +103,12 @@ const mutations = {
     state.mapFile.filename = filename;
   },
 
-  [mt.CHANGE_SAVING_STATUS](state, { status }) {
-    state.savingStatus = status;
+  [mt.CHANGE_SAVE_STATUS](state, { status }) {
+    state.saveStatus = status;
   },
 
   [mt.RESET_SAVE_STATUS](state) {
-    state.savingStatus = "";
+    state.saveStatus = "";
   }
 };
 
