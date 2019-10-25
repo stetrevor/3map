@@ -34,6 +34,16 @@ const state = {
   resources: []
 };
 
+const getters = {
+  tree(state) {
+    return state.treeData;
+  },
+
+  boundingBox() {
+    return state.treeBoundingBox;
+  }
+};
+
 const mutations = {
   [mt.ADD_CHILD](state, { parent }) {
     const node = createNewNode();
@@ -175,6 +185,7 @@ const actions = {
 
 export default {
   state,
+  getters,
   mutations,
   actions
 };
