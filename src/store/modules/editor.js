@@ -189,11 +189,13 @@ const actions = {
 
   uploadMapFile({ state, dispatch }, { id, filename }) {
     // Check to see if there's any change.
+    // If not, delete the staged map.
     if (
       state.saveStatus === "" ||
       Hasher.hash({ tree: state.treeData }) === state.initialContentHash
-    )
-      return;
+    ) {
+      return api.local.deleteStagedMap({ id });
+    }
 
     const fileId = id === "new" ? shortid.generate() : id;
     const refPath = fileId + "/index.json";
