@@ -1,5 +1,6 @@
 import { Layout, BoundingBox } from "non-layered-tidy-tree-layout";
 import shortid from "shortid";
+import { compare } from "fast-json-patch";
 
 import api from "@/api";
 import * as mt from "../mutation-types";
@@ -16,6 +17,17 @@ const createNewNode = () => {
   };
 };
 
+/**
+ * Return true if two trees are the same.
+ *
+ * @param {object} tree1 The first tree
+ * @param {object} tree2 The second tree
+ */
+function noChange(tree1, tree2) {
+  const diff = compare(tree1, tree2);
+  return diff.length === 0;
+}
+
 const NODE_BOUNDING_BOX = { gap: 32, bottomPadding: 64 };
 const NODE_SIZE_DEFAULT = { width: 100, height: 50 };
 const layout = new Layout(
@@ -30,7 +42,8 @@ const state = {
   /**
    * { refPath, downloadURL }
    */
-  resources: []
+  resources: [],
+  initialContent: []
 };
 
 const getters = {
@@ -109,6 +122,10 @@ const mutations = {
 
   [mt.RESET_SAVE_STATUS](state) {
     state.saveStatus = "";
+  },
+
+  [mt.SET_INITIAL_CONTENT](state, content) {
+    state.initialContent = content;
   }
 };
 
@@ -170,6 +187,7 @@ const actions = {
       }
     }
 
+    commit(mt.SET_INITIAL_CONTENT, content);
     commit(mt.RESET_SAVE_STATUS);
     commit(mt.SET_MAP_FILE, { id, filename });
     commit(mt.SET_CONTENT, content);
@@ -181,7 +199,10 @@ const actions = {
   uploadMapFile({ state, dispatch }, { id, filename }) {
     // Check to see if there's any change.
     // If not, delete the staged map.
-    if (state.saveStatus === "") {
+    if (
+      state.saveStatus === "" ||
+      noChange(state.initialContent, { tree: state.treeData })
+    ) {
       return api.local.deleteStagedMap({ id });
     }
 
