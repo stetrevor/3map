@@ -43,7 +43,7 @@ const state = {
    * { refPath, downloadURL }
    */
   resources: [],
-  initialContent: []
+  initialContent: null
 };
 
 const getters = {
@@ -125,7 +125,7 @@ const mutations = {
   },
 
   [mt.SET_INITIAL_CONTENT](state, content) {
-    state.initialContent = content;
+    state.initialContent = JSON.parse(JSON.stringify(content));
   }
 };
 
