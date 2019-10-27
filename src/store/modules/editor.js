@@ -168,6 +168,8 @@ const actions = {
   },
 
   async getMapContent({ commit }, { id, filename }) {
+    commit(mt.RESET_SAVE_STATUS);
+
     let content;
     if (id === "new") {
       content = { tree: createNewNode() };
@@ -188,7 +190,6 @@ const actions = {
     }
 
     commit(mt.SET_INITIAL_CONTENT, content);
-    commit(mt.RESET_SAVE_STATUS);
     commit(mt.SET_MAP_FILE, { id, filename });
     commit(mt.SET_CONTENT, content);
     commit(mt.UPDATE_LAYOUT);
