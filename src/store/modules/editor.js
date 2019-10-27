@@ -1,11 +1,9 @@
 import { Layout, BoundingBox } from "non-layered-tidy-tree-layout";
 import shortid from "shortid";
-import hasher from "node-object-hash";
+import { compare } from "fast-json-patch";
 
 import api from "@/api";
 import * as mt from "../mutation-types";
-
-const Hasher = hasher();
 
 const createNewNode = () => {
   const id = shortid.generate();
@@ -18,6 +16,17 @@ const createNewNode = () => {
     children: []
   };
 };
+
+/**
+ * Return true if two trees are the same.
+ *
+ * @param {object} tree1 The first tree
+ * @param {object} tree2 The second tree
+ */
+function noChange(tree1, tree2) {
+  const diff = compare(tree1, tree2);
+  return diff.length === 0;
+}
 
 const NODE_BOUNDING_BOX = { gap: 32, bottomPadding: 64 };
 const NODE_SIZE_DEFAULT = { width: 100, height: 50 };
@@ -34,7 +43,7 @@ const state = {
    * { refPath, downloadURL }
    */
   resources: [],
-  initialContentHash: ""
+  initialContent: null
 };
 
 const getters = {
@@ -115,8 +124,8 @@ const mutations = {
     state.saveStatus = "";
   },
 
-  [mt.SET_INITIAL_CONTENT_HASH](state, hash) {
-    state.initialContentHash = hash;
+  [mt.SET_INITIAL_CONTENT](state, content) {
+    state.initialContent = JSON.parse(JSON.stringify(content));
   }
 };
 
@@ -159,6 +168,8 @@ const actions = {
   },
 
   async getMapContent({ commit }, { id, filename }) {
+    commit(mt.RESET_SAVE_STATUS);
+
     let content;
     if (id === "new") {
       content = { tree: createNewNode() };
@@ -178,8 +189,7 @@ const actions = {
       }
     }
 
-    commit(mt.SET_INITIAL_CONTENT_HASH, Hasher.hash(content));
-    commit(mt.RESET_SAVE_STATUS);
+    commit(mt.SET_INITIAL_CONTENT, content);
     commit(mt.SET_MAP_FILE, { id, filename });
     commit(mt.SET_CONTENT, content);
     commit(mt.UPDATE_LAYOUT);
@@ -192,7 +202,7 @@ const actions = {
     // If not, delete the staged map.
     if (
       state.saveStatus === "" ||
-      Hasher.hash({ tree: state.treeData }) === state.initialContentHash
+      noChange(state.initialContent, { tree: state.treeData })
     ) {
       return api.local.deleteStagedMap({ id });
     }
